@@ -1,0 +1,23 @@
+{
+  "name": "@hmcts/ctsc-web-chat",
+  "version": "0.1.0",
+  "description": "Assets to support HMCTS CTSC web chat",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmcts/ctsc-web-chat.git"
+  },
+  "keywords": [
+    "CTSC",
+    "web",
+    "chat",
+    "CSS"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hmcts/ctsc-web-chat/issues"
+  },
+  "homepage": "https://github.com/hmcts/ctsc-web-chat#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}
