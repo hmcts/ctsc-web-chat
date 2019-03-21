@@ -19,5 +19,8 @@
   "homepage": "https://github.com/hmcts/ctsc-web-chat#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "test": "exit 0"
   }
 }
