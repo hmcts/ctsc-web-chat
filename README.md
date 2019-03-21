@@ -5,5 +5,5 @@ Web chat component for services
 
 ```bash
 # Add this module as a dependency to your web application using Yarn
-yarn @hmcts/add ctsc-web-chat
+yarn add @hmcts/ctsc-web-chat
 ```
