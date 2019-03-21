@@ -1,1 +1,9 @@
 language: node_js
+deploy:
+  provider: npm
+  email: jenkins-reform@HMCTS.NET
+  api_key:
+    secure: cos4kmVQtEqYLXVInHv/LyYqw7zgHbS6ahG1PY7ULrzca5sS1YxdVbcY+TWepvhqtgOuYC0ad52KaNUvUUVLmtJXbbtPJR8QuVAMQWw8iN0vGY2JATdE6Kgavy+ziCQW3THem0A04KPq/ZPVZyoGXq69dtyvmYVJaoL5mwsYLJpNHodBQTob2Wuv1T+Cmlx0yrf1ELw+i5GpqGNxwSrRZsXkch6RWmH1265jGtg/BEIkzVfLW/FGcMzbJqd7OlgyDUfEQALr0KK/KI3vUXyCsDlqeuQNibyn0IO2ejFWhZ6s4NWuNmzi4NnVDXlRZzM8+E+Lcc0Qk44x3f8uK+J4wK2GrSlvDnKrGOLP9qVtUJwxrGbtCcAR3KWEZ51PRjPlw+r2XJtepacdkKbQ7H/FUZ0i2ov4kIfh2tFlhQToC1jQYCNRDOdKRofysXGa71SSLEH/ZJIJjV5Dh3rLhHmxht2iFQ0dlurovJBJf5ajQ5VXnxJawDzNu0KA4/hmJ/EaJjNjcpuXJCIQ+1+2VgQFbM88ZtHNsWM3sHQ9hGzIp4+jiqMx+ncB21NGGdBxzhl6UI2KTHedK44A80iGHHdTD6VxlpEuTQ2imA13lX+AI0rdGDZPLvBOL74q1n/B0PbtJNbLQvDf4X2upRShwnZtpiknV1FY+Jwf2NlnMG6ViLI=
+  on:
+    tags: true
+    repo: hmcts/ctsc-web-chat
