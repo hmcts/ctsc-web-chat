@@ -1,15 +1,38 @@
-function webchat_init(uuid, tenant, channel, stylesheetURL, busPublishInfo, busPublishLanguage='en', domain = 'https://vcc-eu4.8x8.com', path = '/.', buttonContainerId = 'ctsc-web-chat') {
-    window.__8x8Chat = {
-        uuid: uuid,
-        tenant: tenant,
-        channel: channel,
-        domain: domain,
-        path: path,
-        buttonContainerId: buttonContainerId,
-        align: 'right',
-        stylesheetURL: stylesheetURL,
+function webchat_init(customParams) {
+    const defaultParams = {
+        uuid: '',
+        tenant: '',
+        channel: '',
+        stylesheetURL: '',  // should either be absolute starting with 'https:', or path relative to site root starting with '/'
+        busPublishInfo: null,
+        busPublishLanguage: 'en',   // use 'cy' for Welsh
+        domain: 'https://vcc-eu4.8x8.com',
+        path: '/.',
+        buttonContainerId: 'ctsc-web-chat',
         linkText: 'Chat online with an agent',
-        additionalText: '(Monday to Friday, 9.00am to 5.00pm)',
+        additionalText: '(Monday to Friday, 9.00am to 5.00pm)'
+    };
+
+    let params = Object.assign({}, defaultParams, customParams);
+
+    window.__8x8Chat = {
+        uuid: params.uuid,
+        tenant: params.tenant,
+        channel: params.channel,
+        domain: params.domain,
+        path: params.path,
+        buttonContainerId: params.buttonContainerId,
+        align: 'right',
+        stylesheetURL:
+        // if stylesheetURL starts with 'https:', just use it as is
+            params.stylesheetURL.startsWith('https:') ? params.stylesheetURL :
+                // otherwise, if we are running on a https server and stylesheetURL starts with a slash, use it as path
+                (params.stylesheetURL.startsWith('/') && location.protocol === 'https') ?
+                    'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
+                    // otherwise assume we are running locally for dev or testing, and use master version of CSS from jsdelivr
+                    'https://cdn.jsdelivr.net/gh/hmcts/ctsc-web-chat/assets/css/hmcts-webchat.css',
+        linkText: params.linkText,
+        additionalText: params.additionalText,
         onInit: function(bus) {
             window.bus = bus;
 
@@ -31,10 +54,10 @@ function webchat_init(uuid, tenant, channel, stylesheetURL, busPublishInfo, busP
             };
 
             // Send optional additional data if passed in
-            if (busPublishInfo) {
-                bus.publish('customer:set-info', busPublishInfo);
+            if (params.busPublishInfo) {
+                bus.publish('customer:set-info', params.busPublishInfo);
             }
-            bus.publish('chat:set-language', busPublishLanguage);
+            bus.publish('chat:set-language', params.busPublishLanguage);
 
             if (chatContainer) {
                 replaceChatLink();
