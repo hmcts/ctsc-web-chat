@@ -9,8 +9,17 @@ function webchat_init(customParams) {
         domain: 'https://vcc-eu4.8x8.com',
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
-        linkText: 'Chat online with an agent',
-        additionalText: '(Monday to Friday, 9.00am to 5.00pm)'
+        //linkText: 'Chat online with an agent',
+ 		busHandlerURL: '',
+        additionalText: '',
+		additionalTextNoAgent: 'No agents are available, please try again later',
+		additionalTextTooBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
+		additionalTextClosed : 'Web chat is now closed.Come back Monday to Friday 9am to 5pm.',
+		additionalTextClosed1: 'Or contact us using one of the ways below.',
+		linkTextAgent: 'Start web chat (opens in a new window)',
+		btnNoAgents: '',
+		btnAgentsBusy: '',
+		btnServiceClosed: ''
     };
 
     let params = Object.assign({}, defaultParams, customParams);
@@ -31,25 +40,59 @@ function webchat_init(customParams) {
                     'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
                     // otherwise assume we are running locally for dev or testing, and use master version of CSS from jsdelivr
                     'https://cdn.jsdelivr.net/gh/hmcts/ctsc-web-chat/assets/css/hmcts-webchat.css',
-        linkText: params.linkText,
+		//busHandlerURL: params.busHandlerURL,			
+        //linkText: params.linkText,
         additionalText: params.additionalText,
         onInit: function(bus) {
             window.bus = bus;
-
+		
             const chatContainer = document.querySelector('#' + window.__8x8Chat.buttonContainerId);
             const replaceChatLink = function() {
                 const chatImg = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' img');
-
+				const chatLink = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' a');
+				const br = document.createElement('br');
+			
                 if (chatImg) {
-                    const chatLink = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' a');
-                    const br = document.createElement('br');
-                    const additionalText = document.createTextNode(window.__8x8Chat.additionalText);
-
-                    chatLink.innerHTML = null;
-                    chatLink.innerText = window.__8x8Chat.linkText;
-
-                    chatContainer.appendChild(br);
-                    chatContainer.appendChild(additionalText);
+                   const chatImgBtn = chatImg.src.split("CHAT")[1];
+				
+					if (chatImgBtn == params.btnNoAgents) {
+						
+						 const additionalText = document.createTextNode(params.additionalTextNoAgent);
+						 chatLink.innerHTML = null;
+						 chatContainer.appendChild(additionalText);
+					
+						 
+					} else if (chatImgBtn == params.btnAgentsBusy) {
+						const additionalText = document.createTextNode(params.additionalTextTooBusy);
+						 chatLink.innerHTML = null;
+						 chatContainer.appendChild(additionalText); 
+					
+						 
+					} else if (chatImgBtn == params.btnServiceClosed) {
+						const additionalText = document.createTextNode(params.additionalTextClosed);
+						const additionalText1 = document.createTextNode(params.additionalTextClosed1);
+						 chatLink.innerHTML = null;
+						 chatContainer.appendChild(additionalText);
+						 chatContainer.appendChild(br);
+						 chatContainer.appendChild(additionalText1);
+						 																								 
+									
+					} else {
+						
+					
+						const linkText=params.linkTextAgent;
+						
+						const additionalText = document.createTextNode(params.additionalText);
+						
+						chatLink.innerHTML = null;
+						
+						chatLink.innerText = linkText;
+					
+						chatContainer.appendChild(br);
+						
+						chatContainer.appendChild(additionalText);			
+						
+					}	
                 }
             };
 
