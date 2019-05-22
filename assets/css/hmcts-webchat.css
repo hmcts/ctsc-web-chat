@@ -21,12 +21,9 @@ body, input[type="text"], textarea, button, select, .confirm-close {
     padding: 0;
 }
 
-
 /*****************************************************************************
  * Controls
  *****************************************************************************/
-
-
 .control {
     background: none !important;
     border: 0 !important;
@@ -126,12 +123,6 @@ body, input[type="text"], textarea, button, select, .confirm-close {
     font-weight: 400;
     color: Black;
 }
-
-/*Style Attribute {*/
-/*    color: #0b0c0c;*/
-/*    border-color: #DDDDDD;*/
-/*    background-color: black;*/
-/*}*/
 
 /*****************************************************************************
  * Introduction
