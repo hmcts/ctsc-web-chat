@@ -120,9 +120,9 @@ button, button:active {
  }
 
 
-element.style {
-    border-color: #cf2626;
-}
+/*element.style {*/
+/*    border-color: #cf2626;*/
+/*}*/
 
 body, input[type="text"], textarea, button, select, .confirm-close {
     font-family: "nta", Arial, sans-serif;
@@ -131,11 +131,11 @@ body, input[type="text"], textarea, button, select, .confirm-close {
     color: Black;
 }
 
-Style Attribute {
-    color: #555555;
-    border-color: #DDDDDD;
-    background-color: black;
-}
+/*Style Attribute {*/
+/*    color: #555555;*/
+/*    border-color: #DDDDDD;*/
+/*    background-color: black;*/
+/*}*/
 
 .chat-incoming-msg a {
     color: blue !important;
