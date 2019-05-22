@@ -1,4 +1,6 @@
 function webchat_init(customParams) {
+    const version = '0.1.8';
+
     const defaultParams = {
         uuid: '',
         tenant: '',
@@ -39,7 +41,7 @@ function webchat_init(customParams) {
                 (params.stylesheetURL.startsWith('/') && location.protocol === 'https') ?
                     'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
                     // otherwise assume we are running locally for dev or testing, and use master version of CSS from jsdelivr
-                    'https://cdn.jsdelivr.net/gh/hmcts/ctsc-web-chat/assets/css/hmcts-webchat.css',
+                    'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
         //busHandlerURL: params.busHandlerURL,
         //linkText: params.linkText,
         additionalText: params.additionalText,
