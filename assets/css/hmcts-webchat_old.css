@@ -3,9 +3,9 @@
  *****************************************************************************/
 body, input[type="text"], textarea, button, select, .confirm-close {
     font-family: "nta", Arial, sans-serif;
-	font-size: 19px;
-	font-weight: 400;
-	color: #0b0c0c;
+    font-size: 19px;
+    font-weight: 400;
+    color: #0b0c0c;
 }
 
 /*****************************************************************************
@@ -31,7 +31,7 @@ body, input[type="text"], textarea, button, select, .confirm-close {
     line-height: 1.1;
     text-decoration: none !important;
     opacity: 1 !important;
-	width: 50px;
+    width: 50px;
 }
 
 .control:hover {
@@ -40,8 +40,8 @@ body, input[type="text"], textarea, button, select, .confirm-close {
 
 .control.close:before, .control.end:before {
     font-size: 14px;
-	font-weight: 400;
-	color: #fff;
+    font-weight: 400;
+    color: #fff;
     content: "close \00D7";
 }
 
@@ -55,25 +55,25 @@ body, input[type="text"], textarea, button, select, .confirm-close {
 .header .title {
     background: #000;
     font-size: 24px;
-	font-weight: 600;
+    font-weight: 600;
     color: #fff;
     padding: 5px 8px;
 }
 
 .header p {
-	font-size: 19px;
-	color: #0b0c0c;
-	font-weight: 400;
+    font-size: 19px;
+    color: #0b0c0c;
+    font-weight: 400;
 }
 
 label {
-	font-size: 19px;
-	color: #0b0c0c;
-	font-weight: 400;
+    font-size: 19px;
+    color: #0b0c0c;
+    font-weight: 400;
 }
 
 .footer {
-	display: none;
+    display: none;
 }
 
 
@@ -87,10 +87,10 @@ input[type="text"], textarea, .message-history, select {
 button, button:active {
     -ms-filter: "none";
     background-image: none;
-	background-color: #00823B !important;
+    background-color: #00823B !important;
     box-shadow: none;
-	color: #fff !important;
-	font-size: 19px;
+    color: #fff !important;
+font-size: 19px;
 }
 
 /*****************************************************************************
@@ -137,40 +137,40 @@ button, button:active {
     border: 1px solid #ddd;
     color: #fff;
     position: relative;
-	font-size: 19px;
-	font-weight: 400;
+    font-size: 19px;
+    font-weight: 400;
 }
 
 .chat-outgoing-msg {
-	background: #408B68;
+    background: #408B68;
     margin-left: 20%;
     text-align: left;
-	border-radius: 5px;
+    border-radius: 5px;
 }
 
 .chat-incoming-msg {
     margin-right: 20%;
-	background: #4c2c92;
-	border-radius: 5px;
-	color: #fff;
+    background: #4c2c92;
+    border-radius: 5px;
+    color: #fff;
 }
 
 .chat-incoming-msg a {
-	color: #fff !important;
+    color: #fff !important;
 }
 
 
 .chat-log-msg, .chat-info-msg, .chat-error-msg, .chat-link-msg {
     text-align: left;
-	font-size: 19px;
-	font-weight: 400;
-	font-style: normal;
+    font-size: 19px;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* hide counter */
 #message-counter {
     visibility: hidden;
-    width: 0px;
+    width: 0;
 }
 /*****************************************************************************
  * Acknowledge/Close messages

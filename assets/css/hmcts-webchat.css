@@ -3,9 +3,9 @@
  *****************************************************************************/
 body, input[type="text"], textarea, button, select, .confirm-close {
     font-family: "nta", Arial, sans-serif;
-	font-size: 19px;
-	font-weight: 400;
-	color: #0b0c0c;
+    font-size: 19px;
+    font-weight: 400;
+    color: #0b0c0c;
 }
 
 /*****************************************************************************
@@ -33,7 +33,7 @@ body, input[type="text"], textarea, button, select, .confirm-close {
     line-height: 1.1;
     text-decoration: none !important;
     opacity: 1 !important;
-	width: 50px;
+    width: 50px;
 }
 
 .control:hover {
@@ -42,13 +42,10 @@ body, input[type="text"], textarea, button, select, .confirm-close {
 
 .control.close:before, .control.end:before {
     font-size: 14px;
-	font-weight: 400;
-	color: #fff;
+    font-weight: 400;
+    color: #fff;
     content: "close";
-    }
-
-
-
+}
 
 /*****************************************************************************
  * Header
@@ -60,30 +57,29 @@ body, input[type="text"], textarea, button, select, .confirm-close {
 .header .title {
     background: #000;
     font-size: 24px;
-	font-weight: 600;
+    font-weight: 600;
     color: #fff;
     padding: 5px 8px;
 }
 
 .header p {
-	font-size: 10px;
-	color: #0b0c0c;
-	font-weight: 400;
+    font-size: 10px;
+    color: #0b0c0c;
+    font-weight: 400;
 }
 
 label {
-	font-size: 16px;
-	color: #0b0c0c;
-	font-weight: 400;
+    font-size: 16px;
+    color: #0b0c0c;
+    font-weight: 400;
 }
 
 .footer {
-	display: none;
+    display: none;
 }
 
-
 /*****************************************************************************
- * Form - Green button with white font 
+ * Form - Green button with white font
  *****************************************************************************/
 input[type="text"], textarea, .message-history, select {
     box-shadow: none;
@@ -92,10 +88,10 @@ input[type="text"], textarea, .message-history, select {
 button, button:active {
     -ms-filter: "none";
     background-image: none;
-	background-color: #00823B !important;
+    background-color: #00823B !important;
     box-shadow: none;
-	color: #fff !important;
-	font-size: 19px;
+    color: #fff !important;
+    font-size: 19px;
 }
 
 /*****************************************************************************
@@ -109,15 +105,13 @@ button, button:active {
 .message-actions .action-save {
     background-position: 0 0;
     background-color: #0b0c0c;!important;
-	opacity: 1;
-
+    opacity: 1;
 }
 
 .message-actions .action-clear {
     background-position: 0 -36px;
     background-color: #0b0c0c;!important;
-    	opacity: 1;
-
+    opacity: 1;
 }
 
 .container, .inner-container, input[type="text"], textarea, button, select {
@@ -126,9 +120,6 @@ button, button:active {
     background-color: #E8E8E8;
  }
 
-
-
-
 body, input[type="text"], textarea, button, select, .confirm-close {
     font-family: "nta", Arial, sans-serif;
     font-size: 19px;
@@ -136,15 +127,11 @@ body, input[type="text"], textarea, button, select, .confirm-close {
     color: Black;
 }
 
-
-
 Style Attribute {
     color: #0b0c0c;
     border-color: #DDDDDD;
     background-color: black;
 }
-
-
 
 /*****************************************************************************
  * Introduction
@@ -190,54 +177,51 @@ Style Attribute {
     border: 1px solid #ddd;
     color: #000000;
     position: relative;
-        font-size: 19px;
-        font-weight: 400;
+    font-size: 19px;
+    font-weight: 400;
 }
 
 .chat-outgoing-msg {
-        background: #E8E8E8;
+    background: #E8E8E8;
     margin-left: 20%;
     text-align: left;
-   border-radius: 5px;
+    border-radius: 5px;
     color: #0b0c0c;
     border-color: black;
-
-
 }
 
 .chat-incoming-msg {
     margin-right: 20%;
-        background: #dff0f8;
-        border-radius: 5px;
-        color: #0b0c0c;
+    background: #dff0f8;
+    border-radius: 5px;
+    color: #0b0c0c;
     border-color: black;
 }
 
 .chat-incoming-msg a {
-        color: #fff !important;
+    color: #fff !important;
 }
 
 
 .chat-log-msg, .chat-info-msg, .chat-error-msg, .chat-link-msg {
     text-align: left;
-        font-size: 19px;
-        font-weight: 400;
-        font-style: normal;
+    font-size: 19px;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* hide counter */
 #message-counter {
     visibility: hidden;
-    width: 0px;
+    width: 0;
 }
 
 .chat-incoming-msg a {
     color: #080deb !important;
 }
 
-
 input[type="text"], textarea, button, .message-history, select {
-    font-size: 19px; 
+    font-size: 19px;
     padding: 15px 8px;
     border: 1px solid #DDD;
 }
