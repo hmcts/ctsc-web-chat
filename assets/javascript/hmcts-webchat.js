@@ -56,25 +56,20 @@ function webchat_init(customParams) {
                    const chatImgBtn = chatImg.src.split("CHAT")[1];
 
                     if (chatImgBtn === params.btnNoAgents) {
-
-                         const additionalText = document.createTextNode(params.additionalTextNoAgent);
-                         chatLink.innerHTML = null;
-                         chatContainer.appendChild(additionalText);
-
-
+                        const additionalText = document.createTextNode(params.additionalTextNoAgent);
+                        chatLink.innerHTML = null;
+                        chatContainer.appendChild(additionalText);
                     } else if (chatImgBtn === params.btnAgentsBusy) {
                         const additionalText = document.createTextNode(params.additionalTextTooBusy);
-                         chatLink.innerHTML = null;
-                         chatContainer.appendChild(additionalText);
-
-
+                        chatLink.innerHTML = null;
+                        chatContainer.appendChild(additionalText);
                     } else if (chatImgBtn === params.btnServiceClosed) {
                         const additionalText = document.createTextNode(params.additionalTextClosed);
                         const additionalText1 = document.createTextNode(params.additionalTextClosed1);
-                         chatLink.innerHTML = null;
-                         chatContainer.appendChild(additionalText);
-                         chatContainer.appendChild(br);
-                         chatContainer.appendChild(additionalText1);
+                        chatLink.innerHTML = null;
+                        chatContainer.appendChild(additionalText);
+                        chatContainer.appendChild(br);
+                        chatContainer.appendChild(additionalText1);
                     } else {
                         const linkText=params.linkTextAgent;
                         const additionalText = document.createTextNode(params.additionalText);
