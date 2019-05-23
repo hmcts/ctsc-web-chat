@@ -1,5 +1,10 @@
+function parseText(text) {
+    const textArray = text.split('\n');
+    return textArray;
+}
+
 function webchat_init(customParams) {
-    const version = '0.1.8';
+    const version = '0.1.9';
 
     const defaultParams = {
         uuid: '',
@@ -11,17 +16,15 @@ function webchat_init(customParams) {
         domain: 'https://vcc-eu4.8x8.com',
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
-        //linkText: 'Chat online with an agent',
         busHandlerURL: '',
         additionalText: '',
         additionalTextNoAgent: 'No agents are available, please try again later',
         additionalTextTooBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
-        additionalTextClosed : 'Web chat is now closed.Come back Monday to Friday 9am to 5pm.',
-        additionalTextClosed1: 'Or contact us using one of the ways below.',
+        additionalTextClosed : 'Web chat is now closed.Come back Monday to Friday 9am to 5pm.\nOr contact us using one of the ways below.',
         linkTextAgent: 'Start web chat (opens in a new window)',
-        btnNoAgents: '',
-        btnAgentsBusy: '',
-        btnServiceClosed: ''
+        btnNoAgents: '/aG1jdHNzdGFnaW5nMDE/button_7732814745cac6f4603c4d1.53357933/img/logo',
+        btnAgentsBusy: '/aG1jdHNzdGFnaW5nMDE/button_2042157415cc19c95669039.65793052/img/logo',
+        btnServiceClosed: '/aG1jdHNzdGFnaW5nMDE/button_20199488815cc1a89e0861d5.73103009/img/logo'
     };
 
     let params = Object.assign({}, defaultParams, customParams);
@@ -35,15 +38,12 @@ function webchat_init(customParams) {
         buttonContainerId: params.buttonContainerId,
         align: 'right',
         stylesheetURL:
-        // if stylesheetURL starts with 'https:', just use it as is
             params.stylesheetURL.startsWith('https:') ? params.stylesheetURL :
-                // otherwise, if we are running on a https server and stylesheetURL starts with a slash, use it as path
                 (params.stylesheetURL.startsWith('/') && location.protocol === 'https') ?
                     'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
-                    // otherwise assume we are running locally for dev or testing, and use master version of CSS from jsdelivr
                     'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
-        //busHandlerURL: params.busHandlerURL,
-        //linkText: params.linkText,
+        // busHandlerURL: params.busHandlerURL,
+        // linkText: params.linkText,
         additionalText: params.additionalText,
         onInit: function(bus) {
             window.bus = bus;
@@ -52,34 +52,38 @@ function webchat_init(customParams) {
             const replaceChatLink = function() {
                 const chatImg = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' img');
                 const chatLink = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' a');
-                const br = document.createElement('br');
 
                 if (chatImg) {
-                   const chatImgBtn = chatImg.src.split("CHAT")[1];
+                    const chatImgBtn = chatImg.src.split('CHAT')[1];
+                    const paragraph = document.createElement('p');
+                    let additionalTextArray;
+
+                    chatLink.innerHTML = null;
 
                     if (chatImgBtn === params.btnNoAgents) {
-                        const additionalText = document.createTextNode(params.additionalTextNoAgent);
-                        chatLink.innerHTML = null;
-                        chatContainer.appendChild(additionalText);
+                        additionalTextArray = parseText(params.additionalTextNoAgent);
                     } else if (chatImgBtn === params.btnAgentsBusy) {
-                        const additionalText = document.createTextNode(params.additionalTextTooBusy);
-                        chatLink.innerHTML = null;
-                        chatContainer.appendChild(additionalText);
+                        additionalTextArray = parseText(params.additionalTextTooBusy);
                     } else if (chatImgBtn === params.btnServiceClosed) {
-                        const additionalText = document.createTextNode(params.additionalTextClosed);
-                        const additionalText1 = document.createTextNode(params.additionalTextClosed1);
-                        chatLink.innerHTML = null;
-                        chatContainer.appendChild(additionalText);
-                        chatContainer.appendChild(br);
-                        chatContainer.appendChild(additionalText1);
+                        additionalTextArray = parseText(params.additionalTextClosed);
                     } else {
-                        const linkText=params.linkTextAgent;
-                        const additionalText = document.createTextNode(params.additionalText);
-                        chatLink.innerHTML = null;
-                        chatLink.innerText = linkText;
-                        chatContainer.appendChild(br);
-                        chatContainer.appendChild(additionalText);
+                        const chatLinkParagraph = document.createElement('p');
+                        chatLink.innerText = params.linkTextAgent;
+                        chatLink.parentNode.insertBefore(chatLinkParagraph, chatLink);
+                        chatLinkParagraph.appendChild(chatLink);
+                        additionalTextArray = parseText(params.additionalText);
                     }
+
+                    additionalTextArray.forEach((line, index) => {
+                        const br = document.createElement('br');
+                        additionalTextLine = document.createTextNode(line);
+                        paragraph.appendChild(additionalTextLine);
+                        if (index < additionalTextArray.length - 1) {
+                            paragraph.appendChild(br);
+                        }
+                    });
+
+                    chatContainer.appendChild(paragraph);
                 }
             };
 
