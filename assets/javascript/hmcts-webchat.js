@@ -1,6 +1,5 @@
 function parseText(text) {
-    const textArray = text.split('\n');
-    return textArray;
+    return text.split('\n');
 }
 
 function webchat_init(customParams) {
@@ -76,7 +75,7 @@ function webchat_init(customParams) {
 
                     additionalTextArray.forEach((line, index) => {
                         const br = document.createElement('br');
-                        additionalTextLine = document.createTextNode(line);
+                        const additionalTextLine = document.createTextNode(line);
                         paragraph.appendChild(additionalTextLine);
                         if (index < additionalTextArray.length - 1) {
                             paragraph.appendChild(br);
