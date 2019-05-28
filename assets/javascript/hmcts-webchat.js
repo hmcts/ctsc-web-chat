@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.9';
+    const version = '0.1.10';
 
     const defaultParams = {
         uuid: '',
@@ -41,8 +41,7 @@ function webchat_init(customParams) {
                 (params.stylesheetURL.startsWith('/') && location.protocol === 'https') ?
                     'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
                     'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
-        // busHandlerURL: params.busHandlerURL,
-        // linkText: params.linkText,
+        busHandlerURL: params.busHandlerURL,
         additionalText: params.additionalText,
         onInit: function(bus) {
             window.bus = bus;
