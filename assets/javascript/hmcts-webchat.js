@@ -3,15 +3,15 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.11';
+    const version = '0.1.12';
 
     const defaultParams = {
         uuid: '',
         tenant: '',
         channel: '',
-        stylesheetURL: '',  // should either be absolute starting with 'https:', or path relative to site root starting with '/'
+        stylesheetURL: '', // should either be absolute starting with 'https:', or path relative to site root starting with '/'
         busPublishInfo: null,
-        busPublishLanguage: 'en',   // use 'cy' for Welsh
+        busPublishLanguage: 'en', // use 'cy' for Welsh
         domain: 'https://vcc-eu4.8x8.com',
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
@@ -19,11 +19,13 @@ function webchat_init(customParams) {
         additionalText: '',
         additionalTextNoAgent: 'No agents are available, please try again later',
         additionalTextTooBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
-        additionalTextClosed : 'Web chat is now closed.Come back Monday to Friday 9am to 5pm.\nOr contact us using one of the ways below.',
+        additionalTextClosed : 'Web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
+        additionalTextChatAlreadyOpen: 'A web chat window is already open.',
         linkTextAgent: 'Start web chat (opens in a new window)',
         btnNoAgents: '/aG1jdHNzdGFnaW5nMDE/button_7732814745cac6f4603c4d1.53357933/img/logo',
         btnAgentsBusy: '/aG1jdHNzdGFnaW5nMDE/button_2042157415cc19c95669039.65793052/img/logo',
-        btnServiceClosed: '/aG1jdHNzdGFnaW5nMDE/button_20199488815cc1a89e0861d5.73103009/img/logo'
+        btnServiceClosed: '/aG1jdHNzdGFnaW5nMDE/button_20199488815cc1a89e0861d5.73103009/img/logo',
+        btnChatAlreadyOpen: '/aG1jdHNzdGFnaW5nMDE/button_15629488245c63eb734e4169.95434221/img/logo'
     };
 
     let params = Object.assign({}, defaultParams, customParams);
@@ -64,6 +66,8 @@ function webchat_init(customParams) {
                         additionalTextArray = parseText(params.additionalTextTooBusy);
                     } else if (chatImgBtn === params.btnServiceClosed) {
                         additionalTextArray = parseText(params.additionalTextClosed);
+                    } else if (chatImgBtn === params.btnChatAlreadyOpen) {
+                        additionalTextArray = parseText(params.additionalTextChatAlreadyOpen);
                     } else {
                         const chatLinkParagraph = document.createElement('p');
                         chatLink.innerText = params.linkTextAgent;
