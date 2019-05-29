@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.12';
+    const version = '0.1.13';
 
     const defaultParams = {
         uuid: '',
@@ -24,8 +24,7 @@ function webchat_init(customParams) {
         linkTextAgent: 'Start web chat (opens in a new window)',
         btnNoAgents: '/aG1jdHNzdGFnaW5nMDE/button_7732814745cac6f4603c4d1.53357933/img/logo',
         btnAgentsBusy: '/aG1jdHNzdGFnaW5nMDE/button_2042157415cc19c95669039.65793052/img/logo',
-        btnServiceClosed: '/aG1jdHNzdGFnaW5nMDE/button_20199488815cc1a89e0861d5.73103009/img/logo',
-        btnChatAlreadyOpen: '/aG1jdHNzdGFnaW5nMDE/button_15629488245c63eb734e4169.95434221/img/logo'
+        btnServiceClosed: '/aG1jdHNzdGFnaW5nMDE/button_20199488815cc1a89e0861d5.73103009/img/logo'
     };
 
     let params = Object.assign({}, defaultParams, customParams);
@@ -66,8 +65,6 @@ function webchat_init(customParams) {
                         additionalTextArray = parseText(params.additionalTextTooBusy);
                     } else if (chatImgBtn === params.btnServiceClosed) {
                         additionalTextArray = parseText(params.additionalTextClosed);
-                    } else if (chatImgBtn === params.btnChatAlreadyOpen) {
-                        additionalTextArray = parseText(params.additionalTextChatAlreadyOpen);
                     } else {
                         const chatLinkParagraph = document.createElement('p');
                         chatLink.innerText = params.linkTextAgent;
