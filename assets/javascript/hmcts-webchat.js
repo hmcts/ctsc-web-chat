@@ -118,6 +118,6 @@ function webchat_init(customParams) {
                 const chatHeader = document.querySelector('#' + window.__8x8Chat.buttonContainerId + '-header');
                 chatHeader.parentNode.removeChild(chatHeader);
             }
-        }, 2000)
+        }, 2000);
     })();
 }
