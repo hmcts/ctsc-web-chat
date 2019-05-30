@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.13';
+    const version = '0.1.14';
 
     const defaultParams = {
         uuid: '',
@@ -86,7 +86,6 @@ function webchat_init(customParams) {
                 }
             };
 
-            // Send optional additional data if passed in
             if (params.busPublishInfo) {
                 bus.publish('customer:set-info', params.busPublishInfo);
             }
@@ -111,5 +110,14 @@ function webchat_init(customParams) {
 
         const os = document.getElementsByTagName('script')[0];
         os.parentNode.insertBefore(se, os);
+
+        setTimeout(function() {
+            const chatContainer = document.querySelector('#' + window.__8x8Chat.buttonContainerId);
+
+            if (chatContainer.innerHTML === '') {
+                const chatHeader = document.querySelector('#' + window.__8x8Chat.buttonContainerId + '-header');
+                chatHeader.parentNode.removeChild(chatHeader);
+            }
+        }, 2000)
     })();
 }
