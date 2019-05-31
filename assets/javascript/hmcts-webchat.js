@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.14';
+    const version = '0.1.15';
 
     const defaultParams = {
         uuid: '',
@@ -16,10 +16,12 @@ function webchat_init(customParams) {
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
         busHandlerURL: '',
+        chatDownAction: 'showMessage', // use 'showMessage' or 'hideHeader'
+        chatDownText: 'The web chat service is temporarily unavailable, please try again later.',
         additionalText: '',
-        additionalTextNoAgent: 'No agents are available, please try again later',
+        additionalTextNoAgent: 'No agents are available, please try again later.',
         additionalTextTooBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
-        additionalTextClosed : 'Web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
+        additionalTextClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
         additionalTextChatAlreadyOpen: 'A web chat window is already open.',
         linkTextAgent: 'Start web chat (opens in a new window)',
         btnNoAgents: '/aG1jdHNzdGFnaW5nMDE/button_7732814745cac6f4603c4d1.53357933/img/logo',
@@ -43,6 +45,8 @@ function webchat_init(customParams) {
                     'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
                     'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
         busHandlerURL: params.busHandlerURL,
+        chatDownAction: params.chatDownAction,
+        chatDownText: params.chatDownText,
         additionalText: params.additionalText,
         onInit: function(bus) {
             window.bus = bus;
@@ -115,8 +119,15 @@ function webchat_init(customParams) {
             const chatContainer = document.querySelector('#' + window.__8x8Chat.buttonContainerId);
 
             if (chatContainer.innerHTML === '') {
-                const chatHeader = document.querySelector('#' + window.__8x8Chat.buttonContainerId + '-header');
-                chatHeader.parentNode.removeChild(chatHeader);
+                switch (window.__8x8Chat.chatDownAction) {
+                    case 'showMessage':
+                        chatContainer.innerHTML = window.__8x8Chat.chatDownText;
+                        break;
+                    case 'hideHeader':
+                        const chatHeader = document.querySelector('#' + window.__8x8Chat.buttonContainerId + '-header');
+                        chatHeader.parentNode.removeChild(chatHeader);
+                        break;
+                }
             }
         }, 2000);
     })();
