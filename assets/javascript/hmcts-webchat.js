@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.15';
+    const version = '0.1.16';
 
     const defaultParams = {
         uuid: '',
@@ -24,6 +24,7 @@ function webchat_init(customParams) {
         additionalTextClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
         additionalTextChatAlreadyOpen: 'A web chat window is already open.',
         linkTextAgent: 'Start web chat (opens in a new window)',
+        chatLinkFocusable: true,
         btnNoAgents: '/aG1jdHNzdGFnaW5nMDE/button_7732814745cac6f4603c4d1.53357933/img/logo',
         btnAgentsBusy: '/aG1jdHNzdGFnaW5nMDE/button_2042157415cc19c95669039.65793052/img/logo',
         btnServiceClosed: '/aG1jdHNzdGFnaW5nMDE/button_20199488815cc1a89e0861d5.73103009/img/logo'
@@ -48,6 +49,7 @@ function webchat_init(customParams) {
         chatDownAction: params.chatDownAction,
         chatDownText: params.chatDownText,
         additionalText: params.additionalText,
+        chatLinkFocusable: params.chatLinkFocusable,
         onInit: function(bus) {
             window.bus = bus;
 
@@ -55,6 +57,10 @@ function webchat_init(customParams) {
             const replaceChatLink = function() {
                 const chatImg = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' img');
                 const chatLink = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' a');
+
+                if (!window.__8x8Chat.chatLinkFocusable) {
+                    chatLink.setAttribute('tabindex', '-1');
+                }
 
                 if (chatImg) {
                     const chatImgBtn = chatImg.src.split('CHAT')[1];
