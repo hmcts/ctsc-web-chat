@@ -1,6 +1,6 @@
 {
   "name": "@hmcts/ctsc-web-chat",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "Assets to support HMCTS CTSC web chat",
   "repository": {
     "type": "git",
@@ -21,6 +21,11 @@
     "access": "public"
   },
   "scripts": {
+    "setup": "NODE_PATH=. node-sass assets/sass/hmcts-webchat.scss --output assets/css --quiet --output-style expanded --include-path node_modules/govuk_frontend",
     "test": "exit 0"
+  },
+  "dependencies": {
+    "govuk-frontend": "^2.12.0",
+    "node-sass": "^4.6.1"
   }
 }

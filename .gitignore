@@ -1,2 +1,4 @@
 # IntelliJ
+/node_modules/
+/assets/css/
 .idea
