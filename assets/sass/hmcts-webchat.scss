@@ -86,10 +86,11 @@ body {
   height: 42px !important;
 
   background-color: govuk-colour("black") !important;
-  padding: 4px 0 !important;
+  padding: 4px 20px !important;
 
   .logo {
-    margin: 0px 5px 0 20px !important;
+    display: none;
+    margin: 0 5px 0 0 !important;
   }
 
   .title {
@@ -160,30 +161,30 @@ body {
   right: 25px !important;
 
   .actions {
-    background-color: govuk-colour("grey-4");
+    background-color: govuk-colour("grey-1");
 
     .action {
-      background-color: $govuk-button-colour !important;
+      background-color: govuk-colour("grey-1") !important;
       opacity: 1 !important;
 
       &:hover {
         opacity: .8 !important;
       }
+
+      &.action-clear {
+        display: none;
+      }
     }
   }
 
   .flag {
-    background-color: $govuk-button-colour !important;
-
-    &:hover {
-      opacity: .8 !important;
-    }
+    background-color: govuk-colour("grey-1") !important;
   }
 }
 
 .message-content {
   .chat-msg-sender {
-    color: $govuk-button-colour;
+    color: black;
     font-size: inherit !important;
   }
 }
@@ -213,20 +214,19 @@ body {
 
 .chat-incoming-msg,
 .chat-outgoing-msg {
+  border: 1px solid black;
   border-radius: 4px;
   color: black;
   padding: 6px 10px;
 }
 
 .chat-incoming-msg {
-  background-color: govuk-tint($govuk-button-colour, 85) !important;
-  border: 1px solid $govuk-button-colour;
+  background-color: govuk-tint(govuk-colour("blue"), 85) !important;
   margin-right: 20%;
 }
 
 .chat-outgoing-msg {
-  background-color: govuk-tint(govuk-colour("blue"), 85) !important;
-  border: 1px solid govuk-colour("blue");
+  background-color: govuk-tint(govuk-colour("grey-3"), 50) !important;
   margin-left: 20%;
 }
 
