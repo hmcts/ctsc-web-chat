@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.18';
+    const version = '0.1.19';
 
     const defaultParams = {
         uuid: '',
@@ -58,7 +58,7 @@ function webchat_init(customParams) {
                 const chatImg = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' img');
                 const chatLink = document.querySelector('#' + window.__8x8Chat.buttonContainerId + ' a');
 
-                if (!window.__8x8Chat.chatLinkFocusable) {
+                if (chatLink && !window.__8x8Chat.chatLinkFocusable) {
                     chatLink.setAttribute('tabindex', '-1');
                 }
 
