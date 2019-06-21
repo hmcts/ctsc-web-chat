@@ -21,7 +21,8 @@
 
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
-            addAriaAtributeToField(wrapper, 'Type your message here');
+            addAtributeToField(wrapper, 'aria-label', 'Type your message here');
+            addAtributeToField(wrapper, 'placeholder', 'Type your message here');
         });
     });
 
@@ -40,14 +41,14 @@
         }
     }
 
-    function addAriaAtributeToField(item, label) {
+    function addAtributeToField(item, attribute, value) {
         let field = item.getElementsByTagName('textarea')[0];
 
         if (!field) {
             field = item.getElementsByTagName('input')[0];
         }
 
-        field.setAttribute('aria-label', label);
+        field.setAttribute( attribute, value);
     }
 
     function wrapLabelInSpan(label) {
