@@ -34,7 +34,7 @@
                 const label = item.getElementsByTagName('label')[0];
 
                 if (label) {
-                    addAriaAtributeToField(item, label.textContent);
+                    addAtributeToField(wrapper, 'aria-label', label.textContent);
                     wrapLabelInSpan(label);
                 }
             }
