@@ -18,6 +18,16 @@
             highlightErroringFields();
             focusFirstError();
         });
+//hh
+        jQuery('div').on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
+            var el = jQuery(e.target);
+            el.attr('tabindex', '0');
+            var pref = 'Your Message: '
+            if ( el.hasClass('chat-incoming-msg') ) {
+                pref = 'Agent\'s Message: '
+            }
+            el.attr('aria-label', pref + el.text());
+        });
 
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
@@ -34,7 +44,8 @@
                 const label = item.getElementsByTagName('label')[0];
 
                 if (label) {
-                    addAtributeToField(wrapper, 'aria-label', label.textContent);
+                    addAtributeToField(item, 'aria-label', label.textContent);
+                    addAtributeToField(item, 'placeholder', 'Type here ...');
                     wrapLabelInSpan(label);
                 }
             }
