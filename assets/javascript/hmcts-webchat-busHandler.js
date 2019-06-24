@@ -12,22 +12,31 @@
     };
 
     jQuery(document).ready(function() {
+        
+
         jQuery('div').on('DOMNodeInserted', '.container', function() {
             adjustDomForAccessibilty();
             validateEmail();
             highlightErroringFields();
             focusFirstError();
         });
-//hh
+
         jQuery('div').on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
+            jQuery('h1').attr( 'tabindex', '1');
+            jQuery('.chat-log-msg').attr( 'tabindex', '0');
+
             var el = jQuery(e.target);
             el.attr('tabindex', '0');
             var pref = 'Your Message: '
             if ( el.hasClass('chat-incoming-msg') ) {
-                pref = 'Agent\'s Message: '
+                pref = 'Agent\'s Message: ';
             }
-            el.attr('aria-label', pref + el.text());
+            var str = el.html();
+            str = str.replace( /<.*?>/g, '  '  );
+
+            el.attr('aria-label', pref + str);
         });
+
 
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
