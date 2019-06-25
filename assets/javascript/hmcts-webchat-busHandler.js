@@ -21,6 +21,7 @@
             focusFirstError();
         });
 
+
         jQuery('div').on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
             jQuery('h1').attr( 'tabindex', '1');
             jQuery('.chat-log-msg').attr( 'tabindex', '0');
@@ -29,7 +30,7 @@
             el.attr('tabindex', '0');
             var pref = 'Your Message: '
             if ( el.hasClass('chat-incoming-msg') ) {
-                pref = 'Agent\'s Message: ';
+                pref = 'Agent ';
             }
             var str = el.html();
             str = str.replace( /<.*?>/g, '  '  );
@@ -37,11 +38,38 @@
             el.attr('aria-label', pref + str);
         });
 
+        var actionsLock = false
 
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
             addAtributeToField(wrapper, 'aria-label', 'Type your message here');
             addAtributeToField(wrapper, 'placeholder', 'Type your message here');
+            
+
+            if (actionsLock){
+                return
+            }
+
+            actionsLock = true;
+            
+
+            jQuery(".actions").hide();
+            jQuery(".flag").css("position","relative")  
+            jQuery(".flag").css("top", "36px")    
+            console.log("INIT");  
+
+            jQuery(".flag").click( function(e) {
+                console.log("Click");  
+                
+                jQuery(".actions").toggle();  
+                if ( jQuery(".actions").is(":visible") ) {
+                    jQuery(".flag").css("top", "0px")    
+                    jQuery(".action-save").focus()    
+                } else {
+                    jQuery(".flag").css("top", "36px")    
+                }
+
+            });
         });
     });
 
