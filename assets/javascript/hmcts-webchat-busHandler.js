@@ -38,40 +38,39 @@
             el.attr('aria-label', pref + str);
         });
 
-        var actionsLock = false
+        var actionsLock = true
 
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
             addAtributeToField(wrapper, 'aria-label', 'Type your message here');
             addAtributeToField(wrapper, 'placeholder', 'Type your message here');
             
-
-            if (actionsLock){
-                return
+            if ( actionsLock===true ) {
+                optionFlagAccessibility();
             }
+            actionsLock = false;
 
-            actionsLock = true;
-            
-
-            jQuery(".actions").hide();
-            jQuery(".flag").css("position","relative")  
-            jQuery(".flag").css("top", "36px")    
-            console.log("INIT");  
-
-            jQuery(".flag").click( function(e) {
-                console.log("Click");  
-                
-                jQuery(".actions").toggle();  
-                if ( jQuery(".actions").is(":visible") ) {
-                    jQuery(".flag").css("top", "0px")    
-                    jQuery(".action-save").focus()    
-                } else {
-                    jQuery(".flag").css("top", "36px")    
-                }
-
-            });
         });
     });
+
+    function optionFlagAccessibility (){
+
+        jQuery(".actions").hide();
+        jQuery(".flag").css("position", "relative")  ;
+        jQuery(".flag").css("top", "36px");  
+
+        jQuery(".flag").click( function(e) {
+            
+            jQuery(".actions").toggle();  
+            if ( jQuery(".actions").is(":visible") ) {
+                jQuery(".flag").css("top", "0px");    
+                jQuery(".action-save").focus();    
+            } else {
+                jQuery(".flag").css("top", "36px");   
+            }
+
+       });
+    }
 
     function adjustDomForAccessibilty() {
         const form = document.querySelector('.pre-chat-container .form-list');
