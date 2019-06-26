@@ -55,18 +55,21 @@
 
     function optionFlagAccessibility (){
 
+        jQuery(".action-clear").remove();
         jQuery(".actions").hide();
+        var flagTopPx = (36 * (jQuery(".actions").children(":visible").length+1) + "px";
+        jQuery(".flag").css("top", flagTopPx);  
+
         jQuery(".flag").css("position", "relative")  ;
-        jQuery(".flag").css("top", "36px");  
 
         jQuery(".flag").click( function(e) {
             
             jQuery(".actions").toggle();  
             if ( jQuery(".actions").is(":visible") ) {
                 jQuery(".flag").css("top", "0px");    
-                jQuery(".action-save").focus();    
+                jQuery(".actions").children(":visible:first").focus()
             } else {
-                jQuery(".flag").css("top", "36px");   
+                jQuery(".flag").css("top", flagTopPx);   
             }
 
        });
