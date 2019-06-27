@@ -65,6 +65,8 @@
         jQuery(".flag").click( function(e) {
             
             jQuery(".actions").toggle();  
+            jQuery(".action-clear").remove();
+
             if ( jQuery(".actions").is(":visible") ) {
                 jQuery(".flag").css("top", "0px");    
                 jQuery(".actions").children(":visible:first").focus()
