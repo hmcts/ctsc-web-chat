@@ -12,7 +12,6 @@
     };
 
     jQuery(document).ready(function() {
-        
 
         jQuery('div').on('DOMNodeInserted', '.container', function() {
             adjustDomForAccessibilty();
@@ -20,13 +19,20 @@
             highlightErroringFields();
             focusFirstError();
         });
-
+        
+        jQuery('div').on('DOMNodeInserted', '.message-wrapper', function(e) {
+            if ( jQuery(".chat-log-msg").text().startsWith("You are now chatting")===true ){
+                jQuery(".message-box").css("opacity", "1");
+            }
+        });
 
         jQuery('div').on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
+            jQuery(".message-box").css("opacity", "1");
             jQuery('h1').attr( 'tabindex', '1');
             jQuery('.chat-log-msg').attr( 'tabindex', '0');
 
             var el = jQuery(e.target);
+            console.log(e,el);
             el.attr('tabindex', '0');
             var pref = 'Your Message: '
             if ( el.hasClass('chat-incoming-msg') ) {
