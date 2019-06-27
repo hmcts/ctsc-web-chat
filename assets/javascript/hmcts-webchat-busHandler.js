@@ -38,7 +38,7 @@
             el.attr('aria-label', pref + str);
         });
 
-        var actionsLock = true
+        var actionsLock = true;
 
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
@@ -52,12 +52,22 @@
 
         });
     });
+    
+    function getFlagOffsetTop(){
+        var visibleActoions = 0;
+        jQuery(".actions").children().each(function(){
+            jQuery(this).css('display')!=='none'?visibleActoions++:null;
+        })
+        return (36 * visibleActoions) + "px";
+    }
 
     function optionFlagAccessibility (){
 
         jQuery(".action-clear").remove();
         jQuery(".actions").hide();
-        var flagTopPx = (36 * (jQuery(".actions").children(":visible").length+1) + "px";
+        
+        var flagTopPx = getFlagOffsetTop();
+
         jQuery(".flag").css("top", flagTopPx);  
 
         jQuery(".flag").css("position", "relative")  ;
