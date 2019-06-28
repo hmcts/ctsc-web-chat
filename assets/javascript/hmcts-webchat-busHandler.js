@@ -1,12 +1,16 @@
 (function(root) {
+    var STR = {
+        YOU_ARE_NOW_CHATTING_WITH: 'You are now chatting with ',
+        agentDisconnected: 'This conversation has now ended, please contact us again if you have any further questions.',
+    } 
     root.__8x8Chat = {
         onInit: function(bus) {
             bus.publish('chat:set-system-messages', {
-                chatEstablishedName: 'You are now chatting with {{agent}}. Please type in the window below to start your chat.',
+                chatEstablishedName: STR.YOU_ARE_NOW_CHATTING_WITH + '{{agent}}. Please type in the window below to start your chat.',
                 pullDownInfo: 'Click for options',
                 endChatNotification: 'Chat session has been ended.',
                 endChatConfirmation: 'Are you sure you want to end this chat conversation?',
-                agentDisconnected: 'This conversation has now ended, please contact us again if you have any further questions.'
+                agentDisconnected: STR.agentDisconnected
             });
         }
     };
@@ -19,10 +23,13 @@
             highlightErroringFields();
             focusFirstError();
         });
-        
+
         jQuery('div').on('DOMNodeInserted', '.message-wrapper', function(e) {
-            if ( jQuery(".chat-log-msg").text().startsWith("You are now chatting")===true ){
+            if ( jQuery(".chat-log-msg").text().startsWith(STR.YOU_ARE_NOW_CHATTING_WITH)===true ){
                 jQuery(".message-box").css("opacity", "1");
+            }
+            if ( jQuery(".chat-error-msg").text().startsWith(STR.agentDisconnected)===true ){
+                jQuery(".message-box").css("opacity", "0");
             }
         });
 
