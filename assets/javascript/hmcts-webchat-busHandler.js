@@ -2,7 +2,7 @@
     var STR = {
         YOU_ARE_NOW_CHATTING_WITH: 'You are now chatting with ',
         agentDisconnected: 'This conversation has now ended, please contact us again if you have any further questions.',
-    } 
+    }
     root.__8x8Chat = {
         onInit: function(bus) {
             bus.publish('chat:set-system-messages', {
@@ -14,30 +14,45 @@
             });
         }
     };
-
+  
+    function resizeChatWindow(count) {
+  
+        setTimeout(function() {
+            if ( window.outerHeight===380 ){
+                window.resizeTo(334, 494);
+            } else {
+                if ( count < 10 ) {
+                  resizeChatWindow(count++);
+                }
+            }
+        }, 1000);
+    }
+  
     jQuery(document).ready(function() {
-
+  
+        resizeChatWindow(0);
+  
         jQuery('div').on('DOMNodeInserted', '.container', function() {
             adjustDomForAccessibilty();
             validateEmail();
             highlightErroringFields();
             focusFirstError();
         });
-
+  
         jQuery('div').on('DOMNodeInserted', '.message-wrapper', function(e) {
-            if ( jQuery(".chat-log-msg").text().startsWith(STR.YOU_ARE_NOW_CHATTING_WITH)===true ){
-                jQuery(".message-box").css("opacity", "1");
+            if ( jQuery('.chat-log-msg').text().startsWith(STR.YOU_ARE_NOW_CHATTING_WITH)===true ){
+                jQuery('.message-box').css('opacity', '1');
             }
-            if ( jQuery(".chat-error-msg").text().startsWith(STR.agentDisconnected)===true ){
-                jQuery(".message-box").css("opacity", "0");
+            if ( jQuery('.chat-error-msg').text().startsWith(STR.agentDisconnected)===true ){
+                jQuery('.message-box').css('opacity', '0');
             }
         });
-
+  
         jQuery('div').on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
-            jQuery(".message-box").css("opacity", "1");
+            jQuery('.message-box').css('opacity', '1');
             jQuery('h1').attr( 'tabindex', '1');
             jQuery('.chat-log-msg').attr( 'tabindex', '0');
-
+  
             var el = jQuery(e.target);
             console.log(e,el);
             el.attr('tabindex', '0');
@@ -47,66 +62,66 @@
             }
             var str = el.html();
             str = str.replace( /<.*?>/g, '  '  );
-
+  
             el.attr('aria-label', pref + str);
         });
-
+  
         var actionsLock = true;
-
+  
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
             addAtributeToField(wrapper, 'aria-label', 'Type your message here');
             addAtributeToField(wrapper, 'placeholder', 'Type your message here');
-            
+  
             if ( actionsLock===true ) {
                 optionFlagAccessibility();
             }
             actionsLock = false;
-
+  
         });
     });
-    
+  
     function getFlagOffsetTop(){
         var visibleActoions = 0;
-        jQuery(".actions").children().each(function(){
+        jQuery('.actions').children().each(function(){
             jQuery(this).css('display')!=='none'?visibleActoions++:null;
         })
-        return (36 * visibleActoions) + "px";
+        return (36 * visibleActoions) + 'px';
     }
-
+  
     function optionFlagAccessibility (){
-
-        jQuery(".action-clear").remove();
-        jQuery(".actions").hide();
-        
+  
+        jQuery('.action-clear').remove();
+        jQuery('.actions').hide();
+  
         var flagTopPx = getFlagOffsetTop();
-
-        jQuery(".flag").css("top", flagTopPx);  
-
-        jQuery(".flag").css("position", "relative")  ;
-
-        jQuery(".flag").click( function(e) {
-            
-            jQuery(".actions").toggle();  
-            jQuery(".action-clear").remove();
-
-            if ( jQuery(".actions").is(":visible") ) {
-                jQuery(".flag").css("top", "0px");    
-                jQuery(".actions").children(":visible:first").focus()
+  
+        jQuery('.flag').css('top', flagTopPx);
+  
+        jQuery('.flag').css('position', 'relative')  ;
+  
+        jQuery('.flag').click( function(e) {
+  
+            jQuery('.actions').toggle();
+            jQuery('.action-clear').remove();
+  
+            if ( jQuery('.actions').is(':visible') ) {
+                jQuery('.flag').css('top', '0px');
+                jQuery('.actions').children(':visible:first').focus()
             } else {
-                jQuery(".flag").css("top", flagTopPx);   
+                jQuery('.flag').css('top', flagTopPx);
             }
-
+  
        });
     }
-
+  
     function adjustDomForAccessibilty() {
         const form = document.querySelector('.pre-chat-container .form-list');
         if (form) {
             const listItems = form.children;
             for (const item of listItems) {
                 const label = item.getElementsByTagName('label')[0];
-
+  
                 if (label) {
                     addAtributeToField(item, 'aria-label', label.textContent);
                     addAtributeToField(item, 'placeholder', 'Type here ...');
@@ -115,21 +130,21 @@
             }
         }
     }
-
+  
     function addAtributeToField(item, attribute, value) {
         let field = item.getElementsByTagName('textarea')[0];
-
+  
         if (!field) {
             field = item.getElementsByTagName('input')[0];
         }
-
+  
         field.setAttribute( attribute, value);
     }
-
+  
     function wrapLabelInSpan(label) {
         const newSpan = document.createElement('span');
         const labelNodes = label.childNodes;
-
+  
         for (const item in labelNodes) {
             if (item.nodeType === Node.TEXT_NODE) {
                 newSpan.appendChild(document.createTextNode(item.nodeValue));
@@ -137,10 +152,10 @@
             }
         }
     }
-
+  
     function validateEmail() {
         const emailField = document.querySelector('input[data-essential="email_id"]');
-
+  
         if (emailField) {
             if (emailField.value !== '' && !isValidEmail(emailField.value)) {
                 jQuery(emailField).siblings('label').children('.error-image').css('display', 'inline-block');
@@ -149,19 +164,19 @@
             }
         }
     }
-
+  
     function isValidEmail(email) {
         var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
     }
-
+  
     function highlightErroringFields() {
         const errorImages = document.querySelectorAll('.pre-chat-container .error-image');
-
+  
         if (errorImages) {
             for (const item of errorImages) {
                 const field = jQuery(item).parent().siblings('textarea, input')[0];
-
+  
                 if (item.style.display === 'inline-block') {
                     jQuery(field).addClass('error');
                 } else {
@@ -170,10 +185,11 @@
             }
         }
     }
-
+  
     function focusFirstError() {
         setTimeout(function() {
             jQuery('textarea.error, input.error').first().focus();
         }, 50);
     }
-})(this);
+  })(this);
+  
