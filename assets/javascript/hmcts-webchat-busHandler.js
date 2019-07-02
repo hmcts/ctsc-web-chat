@@ -1,7 +1,7 @@
 (function(root) {
     var STR = {
         YOU_ARE_NOW_CHATTING_WITH: 'You are now chatting with ',
-        agentDisconnected: 'This conversation has now ended, please contact us again if you have any further questions.',
+        agentDisconnected: 'This conversation has now ended. Click on the ribbon on the top right if you wish to save a copy of this chat.',
     }
     root.__8x8Chat = {
         onInit: function(bus) {
