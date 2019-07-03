@@ -60,9 +60,9 @@
             if (idList.length>0){
                 var drop = makeDropDown(optionList, idList)
                 li2.after(drop)
-                resizeChatWindow(0);
+                // resizeChatWindow(0);
             } else {
-                prepareDropDown();
+                // prepareDropDown();
             }
         }, 1000 );
 
@@ -76,7 +76,7 @@
 
             if ( window.outerHeight < 560 ){
                 window.resizeTo(334, 560);
-                resizeChatWindow(count+1);
+                // resizeChatWindow(count+1);
             } else {
                 if ( count < 30 ) {
                   resizeChatWindow(count+1);
@@ -115,14 +115,21 @@
         jQuery('div').on('DOMNodeInserted', '.message-wrapper', function(e) {
             if ( jQuery('.chat-log-msg').text().startsWith(STR.YOU_ARE_NOW_CHATTING_WITH)===true ){
                 jQuery('.message-box').css('opacity', '1');
+                jQuery('#message-field').attr( 'aria-label', 'Type your message here');
+                jQuery('#message-field').attr( 'placeholder', 'Type your message here');
             }
             if ( jQuery('.chat-error-msg').text().startsWith(STR.agentDisconnected)===true ){
-                jQuery('.message-box').css('opacity', '0');
+                jQuery('.message-box').css('opacity', '0');   
             }
         });
-  
+
+        var actionsLock = true;
+
         jQuery('div').on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
-            jQuery('.message-box').css('opacity', '1');
+            jQuery('#message-field').attr( 'aria-label', 'Type your message here');
+            jQuery('#message-field').attr( 'placeholder', 'Type your message here');
+
+            //  jQuery('.message-box').css('opacity', '1');
             jQuery('h1').attr( 'tabindex', '1');
             jQuery('.chat-log-msg').attr( 'tabindex', '0');
   
@@ -137,13 +144,9 @@
   
             el.attr('aria-label', pref + str);
         });
-  
-        var actionsLock = true;
-  
+    
         jQuery('div').on('DOMNodeInserted', '.message-box', function() {
             const wrapper = document.querySelector('.message-box-item');
-            addAtributeToField(wrapper, 'aria-label', 'Type your message here');
-            addAtributeToField(wrapper, 'placeholder', 'Type your message here');
   
             if ( actionsLock===true ) {
                 optionFlagAccessibility();
@@ -188,6 +191,12 @@
     }
   
     function adjustDomForAccessibilty() {
+        
+        jQuery('a').each( function(i) {
+            var title = jQuery(this).attr('title');
+            jQuery(this).attr('aria-label', title)
+        }) ;
+
         const form = document.querySelector('.pre-chat-container .form-list');
         if (form) {
             const listItems = form.children;
