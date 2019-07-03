@@ -14,31 +14,103 @@
             });
         }
     };
+    function stripHtml(s){
+      return s.replace(/(<([^>]+)>)/ig,"")
+    }
+
+    function makeDropDown(options, ids) {
+      if ( typeof options === 'undefined' || options.length < 2  ){
+          return
+      }
+      if ( jQuery("#selectRadioFake").length>0 ) { 
+          return;
+      }
+      var s = "";
+      s += '<label>' + options[0] + '</label>'
+      s += '<select id="selectRadioFake" onchange="jQuery(\'#\' + this.value).click()" >' +
+            '<option disabled selected value="" ></option>'
+      for (var i = 0; i < ids.length; ++i) {
+          var val = stripHtml(options[i+1]);
+        s += '<option value="'+ ids[i] +'">' + val + '</option>'
+      }
+      s += '</select>';
+      return s;
+    }
+
+    function prepareDropDown() {
+        var li2 = jQuery('.form-list li:nth-child(2)')
+        li2.css('height','0px');
+        li2.css('overflow','hidden');
+
+        setTimeout( function(){
+            var li2 = jQuery('.form-list li:nth-child(2)')
+            li2.css('height','0px');
+            li2.css('overflow','hidden');
+            //
+            var optionList = []
+            var idList = []
+            li2.children("label").each(function(){
+                optionList.push( stripHtml(jQuery(this).html() ) );
+            })
+            li2.children("input[type=radio]").each(function(){
+                idList.push( jQuery(this).attr('id'));
+            })
+
+            if (idList.length>0){
+                var drop = makeDropDown(optionList, idList)
+                li2.after(drop)
+                resizeChatWindow(0);
+            } else {
+                prepareDropDown();
+            }
+        }, 1000 );
+
+    }
   
     function resizeChatWindow(count) {
-  
+          
+        prepareDropDown()
+
         setTimeout(function() {
-            if ( window.outerHeight===380 ){
-                window.resizeTo(334, 494);
+
+            if ( window.outerHeight < 560 ){
+                window.resizeTo(334, 560);
+                resizeChatWindow(count+1);
             } else {
-                if ( count < 10 ) {
-                  resizeChatWindow(count++);
+                if ( count < 30 ) {
+                  resizeChatWindow(count+1);
                 }
             }
         }, 1000);
     }
   
     jQuery(document).ready(function() {
-  
+        
+        prepareDropDown();
+
         resizeChatWindow(0);
-  
+        
+        var dropDownVisted = false;
+
         jQuery('div').on('DOMNodeInserted', '.container', function() {
             adjustDomForAccessibilty();
             validateEmail();
+            
+            jQuery('#selectRadioFake').unbind("blur");
+            jQuery('#selectRadioFake').blur(function(){
+                dropDownVisted = true
+                validateDropDown();
+            })
+            
+            if ( dropDownVisted===true ) {
+                validateDropDown();
+            }
+
             highlightErroringFields();
+
             focusFirstError();
         });
-  
+
         jQuery('div').on('DOMNodeInserted', '.message-wrapper', function(e) {
             if ( jQuery('.chat-log-msg').text().startsWith(STR.YOU_ARE_NOW_CHATTING_WITH)===true ){
                 jQuery('.message-box').css('opacity', '1');
@@ -54,7 +126,6 @@
             jQuery('.chat-log-msg').attr( 'tabindex', '0');
   
             var el = jQuery(e.target);
-            console.log(e,el);
             el.attr('tabindex', '0');
             var pref = 'Your Message: '
             if ( el.hasClass('chat-incoming-msg') ) {
@@ -152,8 +223,18 @@
             }
         }
     }
-  
+    
+    function validateDropDown() {
+        var el = jQuery('#selectRadioFake');
+        if ( el.val() === null || el.val() === '' ) {
+            el.addClass("select-error");
+        } else {
+            el.removeClass("select-error");
+        }
+    }  
+
     function validateEmail() {
+        
         const emailField = document.querySelector('input[data-essential="email_id"]');
   
         if (emailField) {
