@@ -27,7 +27,7 @@
       }
       var s = "";
       s += '<label>' + options[0] + '</label>'
-      s += '<select id="selectRadioFake" onchange="jQuery(\'#\' + this.value).click()" >' +
+      s += '<select aria-label="' + options[0] + '" id="selectRadioFake" onchange="jQuery(\'#\' + this.value).click()" >' +
             '<option disabled selected value="" ></option>'
       for (var i = 0; i < ids.length; ++i) {
           var val = stripHtml(options[i+1]);
@@ -55,6 +55,7 @@
             li2.children("input[type=radio]").each(function(){
                 idList.push( jQuery(this).attr('id'));
             })
+
 
             if (idList.length>0){
                 var drop = makeDropDown(optionList, idList)
@@ -95,15 +96,15 @@
         jQuery('div').on('DOMNodeInserted', '.container', function() {
             adjustDomForAccessibilty();
             validateEmail();
-            
-            jQuery('#selectRadioFake').unbind("blur");
-            jQuery('#selectRadioFake').blur(function(){
-                dropDownVisted = true
-                validateDropDown();
-            })
-            
+                        
             if ( dropDownVisted===true ) {
                 validateDropDown();
+            } else {
+                jQuery('#selectRadioFake').unbind("blur");
+                jQuery('#selectRadioFake').blur(function(){
+                    dropDownVisted = true
+                    validateDropDown();
+                })    
             }
 
             highlightErroringFields();
@@ -191,12 +192,15 @@
         if (form) {
             const listItems = form.children;
             for (const item of listItems) {
-                const label = item.getElementsByTagName('label')[0];
-  
+                const label = item.getElementsByTagName('label')[0];  
                 if (label) {
                     addAtributeToField(item, 'aria-label', label.textContent);
                     addAtributeToField(item, 'placeholder', 'Type here ...');
                     wrapLabelInSpan(label);
+                }
+                const button = item.getElementsByTagName('button')[0];
+                if (button) {
+                    addAtributeToField(item, 'aria-label', label.textContent);
                 }
             }
         }
