@@ -86,6 +86,11 @@
     }
   
     jQuery(document).ready(function() {
+
+        setTimeout(function(){
+            jQuery(".header .logo").remove();
+            jQuery(".header .title").attr('arial-label', jQuery(".header .title").html());
+        }, 1000);
         
         prepareDropDown();
 
