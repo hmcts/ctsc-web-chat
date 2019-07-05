@@ -15,17 +15,17 @@
         }
     };
     function stripHtml(s){
-      return s.replace(/(<([^>]+)>)/ig,"")
+      return s.replace(/(<([^>]+)>)/ig,'')
     }
 
     function makeDropDown(options, ids) {
       if ( typeof options === 'undefined' || options.length < 2  ){
           return
       }
-      if ( jQuery("#selectRadioFake").length>0 ) { 
-          return;
+      if ( jQuery('#selectRadioFake').length>0 ) { 
+          return; // return if already made
       }
-      var s = "";
+      var s = '';
       s += '<label>' + options[0] + '</label>'
       s += '<select aria-label="' + options[0] + '" id="selectRadioFake" onchange="jQuery(\'#\' + this.value).click()" >' +
             '<option disabled selected value="" ></option>'
@@ -37,34 +37,63 @@
       return s;
     }
 
+    function hasPreChatDropDown() {
+        return jQuery('[data-identifier=droplist-radio-q1]').length>0
+    }
+    function fakeHide(el) {
+        if ( el.length>0 ) {
+            el.css('overflow', 'hidden');
+            el.css('height', '0px');
+            el.css('opacity', '0');
+            el.css('position', 'absolute');
+            el.css('top', '-1000px');
+        }
+    }
+    var countPrepareDropDown = 0;
     function prepareDropDown() {
-        var li2 = jQuery('.form-list li:nth-child(2)')
-        li2.css('height','0px');
-        li2.css('overflow','hidden');
+        if ( countPrepareDropDown<10 && !hasPreChatDropDown() ) {
+            countPrepareDropDown++;
+            setTimeout(function(){
+                prepareDropDown();
+            }, 250 );
+            return; // no dropdown on prechat
+        }
+        var dropdownLi = jQuery('[data-identifier=droplist-radio-q1]:first').parent()
 
-        setTimeout( function(){
-            var li2 = jQuery('.form-list li:nth-child(2)')
-            li2.css('height','0px');
-            li2.css('overflow','hidden');
-            //
+        fakeHide(dropdownLi);
+
+        setTimeout( function() {
+            dropdownLi = jQuery('[data-identifier=droplist-radio-q1]:first').parent()
+            fakeHide(dropdownLi);
+
             var optionList = []
             var idList = []
-            li2.children("label").each(function(){
+            
+            dropdownLi.children('label').each(function(){
                 optionList.push( stripHtml(jQuery(this).html() ) );
-            })
-            li2.children("input[type=radio]").each(function(){
+            });
+
+            jQuery('[data-identifier=droplist-radio-q1]').each(function(){
                 idList.push( jQuery(this).attr('id'));
-            })
+            });
 
-
-            if (idList.length>0){
-                var drop = makeDropDown(optionList, idList)
-                li2.after(drop)
-                // resizeChatWindow(0);
-            } else {
-                // prepareDropDown();
-            }
-        }, 1000 );
+            if ( idList.length > 0 ){
+                var drop = makeDropDown(optionList, idList);
+                dropdownLi.after(drop);
+                setTimeout( function(){
+                    if ( jQuery('#selectRadioFake').length>0 ){
+                        jQuery('#selectRadioFake').focus();
+                        jQuery('#selectRadioFake').blur(function(){
+                            if ( jQuery('#selectRadioFake').val()===null || jQuery('#selectRadioFake').val()===''){
+                                jQuery('#selectRadioFake').attr('visited','true');
+                            } else {
+                                jQuery('#selectRadioFake').attr('visited','false');
+                            }
+                        })
+                    }
+                }, 500 );
+            } 
+        }, 500 );
 
     }
   
@@ -88,8 +117,8 @@
     jQuery(document).ready(function() {
 
         setTimeout(function(){
-            jQuery(".header .logo").remove();
-            jQuery(".header .title").attr('arial-label', jQuery(".header .title").html());
+            jQuery('.header .logo').remove();
+            jQuery('.header .title').attr('arial-label', jQuery('.header .title').html());
         }, 1000);
         
         prepareDropDown();
@@ -102,14 +131,8 @@
             adjustDomForAccessibilty();
             validateEmail();
                         
-            if ( dropDownVisted===true ) {
+            if ( hasPreChatDropDown() ) {
                 validateDropDown();
-            } else {
-                jQuery('#selectRadioFake').unbind("blur");
-                jQuery('#selectRadioFake').blur(function(){
-                    dropDownVisted = true
-                    validateDropDown();
-                })    
             }
 
             highlightErroringFields();
@@ -245,9 +268,10 @@
     function validateDropDown() {
         var el = jQuery('#selectRadioFake');
         if ( el.val() === null || el.val() === '' ) {
-            el.addClass("select-error");
+            el.addClass('select-error');
         } else {
-            el.removeClass("select-error");
+            el.removeClass('select-error');
+            el.attr('visited', 'false');
         }
     }  
 
