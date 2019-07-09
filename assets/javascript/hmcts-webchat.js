@@ -3,7 +3,25 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.21';
+    const version = '0.1.22';
+    const requiredTextParams = [
+        'chatDown',
+        'chatClosed',
+        'chatWithAnAgent',
+        'noAgentsAvailable',
+        'allAgentsBusy',
+        'chatAlreadyOpen',
+        'additionalText',
+    ];
+
+    if (!customParams.hasOwnProperty('text') || (
+        typeof customParams.text !== 'object' &&
+        !requiredTextParams.every(function(item) {
+            return customParams.text.hasOwnProperty(item);
+        }))) {
+        console.log('One or more text params missing');
+        return false;
+    }
 
     const defaultParams = {
         uuid: '',
@@ -17,13 +35,16 @@ function webchat_init(customParams) {
         buttonContainerId: 'ctsc-web-chat',
         busHandlerURL: '',
         chatDownAction: 'showMessage', // use 'showMessage' or 'hideHeader'
-        chatDownText: 'The web chat service is temporarily unavailable, please try again later.',
-        additionalText: '',
-        additionalTextNoAgent: 'No agents are available, please try again later.',
-        additionalTextTooBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
-        additionalTextClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
-        additionalTextChatAlreadyOpen: 'A web chat window is already open.',
-        linkTextAgent: 'Start web chat (opens in a new window)',
+        // These properties are now required from the service calling the webchat init function - Leaving here for reference
+        // text: {
+        //     chatDown: 'The web chat service is temporarily unavailable, please try again later.',
+        //     chatWithAnAgent: 'Start web chat (opens in a new window)',
+        //     noAgentsAvailable: 'No agents are available, please try again later.',
+        //     allAgentsBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
+        //     chatClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
+        //     chatAlreadyOpen: 'A web chat window is already open.',
+        //     additionalText: 'Monday to Friday, 9:30am to 5pm',
+        // },
         chatLinkFocusable: true,
         btnNoAgents: '/aG1jdHNzdGFnaW5nMDE/button_7732814745cac6f4603c4d1.53357933/img/logo',
         btnAgentsBusy: '/aG1jdHNzdGFnaW5nMDE/button_2042157415cc19c95669039.65793052/img/logo',
@@ -47,9 +68,10 @@ function webchat_init(customParams) {
                     'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
         busHandlerURL: params.busHandlerURL,
         chatDownAction: params.chatDownAction,
-        chatDownText: params.chatDownText,
-        additionalText: params.additionalText,
         chatLinkFocusable: params.chatLinkFocusable,
+        text: {
+            chatDown: params.text.chatDown
+        },
         onInit: function(bus) {
             window.bus = bus;
 
@@ -70,17 +92,17 @@ function webchat_init(customParams) {
                     chatLink.innerHTML = null;
 
                     if (chatImgBtn === params.btnNoAgents) {
-                        additionalTextArray = parseText(params.additionalTextNoAgent);
+                        additionalTextArray = parseText(params.text.noAgentsAvailable);
                     } else if (chatImgBtn === params.btnAgentsBusy) {
-                        additionalTextArray = parseText(params.additionalTextTooBusy);
+                        additionalTextArray = parseText(params.text.allAgentsBusy);
                     } else if (chatImgBtn === params.btnServiceClosed) {
-                        additionalTextArray = parseText(params.additionalTextClosed);
+                        additionalTextArray = parseText(params.text.chatClosed);
                     } else {
                         const chatLinkParagraph = document.createElement('p');
-                        chatLink.innerText = params.linkTextAgent;
+                        chatLink.innerText = params.text.chatWithAnAgent;
                         chatLink.parentNode.insertBefore(chatLinkParagraph, chatLink);
                         chatLinkParagraph.appendChild(chatLink);
-                        additionalTextArray = parseText(params.additionalText);
+                        additionalTextArray = parseText(params.text.additionalText);
                     }
 
                     additionalTextArray.forEach((line, index) => {
@@ -127,7 +149,7 @@ function webchat_init(customParams) {
             if (chatContainer.innerHTML === '') {
                 switch (window.__8x8Chat.chatDownAction) {
                     case 'showMessage':
-                        chatContainer.innerHTML = window.__8x8Chat.chatDownText;
+                        chatContainer.innerHTML = window.__8x8Chat.text.chatDown;
                         break;
                     case 'hideHeader':
                         const chatHeader = document.querySelector('#' + window.__8x8Chat.buttonContainerId + '-header');
