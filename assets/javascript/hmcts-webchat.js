@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.23';
+    const version = '0.1.24';
     const requiredParams = [
         'uuid',
         'tenant',
