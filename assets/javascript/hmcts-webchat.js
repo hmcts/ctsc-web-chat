@@ -4,11 +4,38 @@ function parseText(text) {
 
 function webchat_init(customParams) {
     const version = '0.1.23';
+    const requiredParams = [
+        'uuid',
+        'tenant',
+        'channel',
+        'textChatDown',
+        'textChatClosed',
+        'textChatWithAnAgent',
+        'textNoAgentsAvailable',
+        'textAllAgentsBusy',
+        'textChatAlreadyOpen',
+        'textAdditional',
+    ];
+
+    if (!requiredParams.every(function(item) {
+        return customParams.hasOwnProperty(item);
+    })) {
+        console.log('One or more params missing');
+        return false;
+    }
 
     const defaultParams = {
-        uuid: '',
-        tenant: '',
-        channel: '',
+        // These properties are now required from the service calling the webchat init function - Leaving here for reference
+        // uuid: '',
+        // tenant: '',
+        // channel: '',
+        // chatDown: 'The web chat service is temporarily unavailable, please try again later.',
+        // chatWithAnAgent: 'Start web chat (opens in a new window)',
+        // noAgentsAvailable: 'No agents are available, please try again later.',
+        // allAgentsBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
+        // chatClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
+        // chatAlreadyOpen: 'A web chat window is already open.',
+        // additionalText: 'Monday to Friday, 9:30am to 5pm',
         stylesheetURL: '', // should either be absolute starting with 'https:', or path relative to site root starting with '/'
         busPublishInfo: null,
         busPublishLanguage: 'en', // use 'cy' for Welsh
@@ -17,17 +44,10 @@ function webchat_init(customParams) {
         buttonContainerId: 'ctsc-web-chat',
         busHandlerURL: '',
         chatDownAction: 'showMessage', // use 'showMessage' or 'hideHeader'
-        chatDownText: 'The web chat service is temporarily unavailable, please try again later.',
-        additionalText: '',
-        additionalTextNoAgent: 'No agents are available, please try again later.',
-        additionalTextTooBusy: 'All our web chat agents are busy helping other people. Please try again later or contact us using one of the ways below.',
-        additionalTextClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
-        additionalTextChatAlreadyOpen: 'A web chat window is already open.',
-        linkTextAgent: 'Start web chat (opens in a new window)',
         chatLinkFocusable: true,
-        btnNoAgents: '/aG1jdHNzdGFnaW5nMDE/button_7732814745cac6f4603c4d1.53357933/img/logo',
-        btnAgentsBusy: '/aG1jdHNzdGFnaW5nMDE/button_2042157415cc19c95669039.65793052/img/logo',
-        btnServiceClosed: '/aG1jdHNzdGFnaW5nMDE/button_20199488815cc1a89e0861d5.73103009/img/logo'
+        btnNoAgents: '/' + customParams.tenant + '/button_7732814745cac6f4603c4d1.53357933/img/logo',
+        btnAgentsBusy: '/' + customParams.tenant + '/button_2042157415cc19c95669039.65793052/img/logo',
+        btnServiceClosed: '/' + customParams.tenant + '/button_20199488815cc1a89e0861d5.73103009/img/logo'
     };
 
     let params = Object.assign({}, defaultParams, customParams);
@@ -47,8 +67,6 @@ function webchat_init(customParams) {
                     'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
         busHandlerURL: params.busHandlerURL,
         chatDownAction: params.chatDownAction,
-        chatDownText: params.chatDownText,
-        additionalText: params.additionalText,
         chatLinkFocusable: params.chatLinkFocusable,
         onInit: function(bus) {
             window.bus = bus;
@@ -70,17 +88,17 @@ function webchat_init(customParams) {
                     chatLink.innerHTML = null;
 
                     if (chatImgBtn === params.btnNoAgents) {
-                        additionalTextArray = parseText(params.additionalTextNoAgent);
+                        additionalTextArray = parseText(params.textNoAgentsAvailable);
                     } else if (chatImgBtn === params.btnAgentsBusy) {
-                        additionalTextArray = parseText(params.additionalTextTooBusy);
+                        additionalTextArray = parseText(params.textAllAgentsBusy);
                     } else if (chatImgBtn === params.btnServiceClosed) {
-                        additionalTextArray = parseText(params.additionalTextClosed);
+                        additionalTextArray = parseText(params.textChatClosed);
                     } else {
                         const chatLinkParagraph = document.createElement('p');
-                        chatLink.innerText = params.linkTextAgent;
+                        chatLink.innerText = params.textChatWithAnAgent;
                         chatLink.parentNode.insertBefore(chatLinkParagraph, chatLink);
                         chatLinkParagraph.appendChild(chatLink);
-                        additionalTextArray = parseText(params.additionalText);
+                        additionalTextArray = parseText(params.textAdditional);
                     }
 
                     additionalTextArray.forEach((line, index) => {
@@ -127,7 +145,7 @@ function webchat_init(customParams) {
             if (chatContainer.innerHTML === '') {
                 switch (window.__8x8Chat.chatDownAction) {
                     case 'showMessage':
-                        chatContainer.innerHTML = window.__8x8Chat.chatDownText;
+                        chatContainer.innerHTML = params.textChatDown;
                         break;
                     case 'hideHeader':
                         const chatHeader = document.querySelector('#' + window.__8x8Chat.buttonContainerId + '-header');
