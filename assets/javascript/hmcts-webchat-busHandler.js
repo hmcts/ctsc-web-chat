@@ -6,7 +6,9 @@
         CHAT_SESSION_ENDED: 'Chat session has been ended.',
         CONFIRM_END_CHAT: 'Are you sure you want to end this chat conversation?',
         TYPE_MESSAGE_HERE: 'Type your message here',
-        TYPE_HERE: 'Type here...'
+        TYPE_HERE: 'Type here...',
+        YOUR_MESSAGE: 'Your Message: ',
+        AGENT: 'Agent '
     };
     root.__8x8Chat = {
         onInit: function(bus) {
@@ -24,58 +26,62 @@
         setTimeout(function() {
             if (window.outerHeight < 560) {
                 window.resizeTo(334, 560);
-                // resizeChatWindow(count+1);
+                // resizeChatWindow(count + 1);
             } else {
                 if (count < 30) {
-                  resizeChatWindow(count+1);
+                  resizeChatWindow(count + 1);
                 }
             }
         }, 1000);
     }
 
     jQuery(document).ready(function() {
+        const $div = jQuery('div');
+
         setTimeout(function() {
+            const $headerTitle = jQuery('.header .title');
             jQuery('.header .logo').remove();
-            jQuery('.header .title').attr('arial-label', jQuery('.header .title').html());
+            $headerTitle.attr('arial-label', $headerTitle.html());
         }, 1000);
 
         resizeChatWindow(0);
 
-        jQuery('div').on('DOMNodeInserted', '.container', function() {
+        $div.on('DOMNodeInserted', '.container', function() {
             adjustDomForAccessibilty();
             validateEmail();
-
-            highlightErroringFields();
-
+            highlightErrorFields();
             focusFirstError();
         });
 
-        jQuery('div').on('DOMNodeInserted', '.message-wrapper', function(e) {
+        $div.on('DOMNodeInserted', '.message-wrapper', function(e) {
+            const $messageBox = jQuery('.message-box');
+            const $messageField = jQuery('#message-field');
             if (jQuery('.chat-log-msg').text().startsWith(STR.YOU_ARE_NOW_CHATTING_WITH)) {
-                jQuery('.message-box').css('opacity', '1');
-                jQuery('#message-field').attr('aria-label', STR.TYPE_MESSAGE_HERE);
-                jQuery('#message-field').attr('placeholder', STR.TYPE_MESSAGE_HERE);
+                $messageBox.css('opacity', 1);
+                addAttributeToField($messageField, 'aria-label', STR.TYPE_MESSAGE_HERE);
+                addAttributeToField($messageField, 'placeholder', STR.TYPE_MESSAGE_HERE);
             }
             if (jQuery('.chat-error-msg').text().startsWith(STR.agentDisconnected)) {
-                jQuery('.message-box').css('opacity', '0');
+                $messageBox.css('opacity', 0);
             }
         });
 
         let actionsLock = true;
 
-        jQuery('div').on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
-            jQuery('#message-field').attr('aria-label', STR.TYPE_MESSAGE_HERE);
-            jQuery('#message-field').attr('placeholder', STR.TYPE_MESSAGE_HERE);
+        $div.on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
+            const $messageField = jQuery('#message-field');
+            addAttributeToField($messageField, 'aria-label', STR.TYPE_MESSAGE_HERE);
+            addAttributeToField($messageField, 'placeholder', STR.TYPE_MESSAGE_HERE);
 
-            //  jQuery('.message-box').css('opacity', '1');
+            //  jQuery('.message-box').css('opacity', 1);
             jQuery('h1').attr('tabindex', '1');
             jQuery('.chat-log-msg').attr('tabindex', '0');
 
             const el = jQuery(e.target);
             el.attr('tabindex', '0');
-            let pref = 'Your Message: '
+            let pref = STR.YOUR_MESSAGE;
             if (el.hasClass('chat-incoming-msg')) {
-                pref = 'Agent ';
+                pref = STR.AGENT;
             }
             let str = el.html();
             str = str.replace(/<.*?>/g, ' ');
@@ -83,13 +89,11 @@
             el.attr('aria-label', pref + str);
         });
 
-        jQuery('div').on('DOMNodeInserted', '.message-box', function() {
-
+        $div.on('DOMNodeInserted', '.message-box', function() {
             if (actionsLock) {
                 optionFlagAccessibility();
             }
             actionsLock = false;
-
         });
     });
 
@@ -102,25 +106,28 @@
     }
 
     function optionFlagAccessibility () {
+        const $actions = jQuery('.actions');
+        const $flag = jQuery('.flag');
+
         jQuery('.action-clear').remove();
-        jQuery('.actions').hide();
+        $actions.hide();
 
         const flagTopPx = getFlagOffsetTop();
 
-        jQuery('.flag').css('top', flagTopPx);
-        jQuery('.flag').css('position', 'relative')  ;
-        jQuery('.flag').click(function() {
-            jQuery('.actions').toggle();
-            jQuery('.action-clear').remove();
+        $flag
+            .css('top', flagTopPx)
+            .css('position', 'relative')
+            .click(function() {
+                $actions.toggle();
+                jQuery('.action-clear').remove();
 
-            if (jQuery('.actions').is(':visible')) {
-                jQuery('.flag').css('top', '0px');
-                jQuery('.actions').children(':visible:first').focus()
-            } else {
-                jQuery('.flag').css('top', flagTopPx);
-            }
-
-       });
+                if ($actions.is(':visible')) {
+                    $flag.css('top', 0);
+                    $actions.children(':visible:first').focus()
+                } else {
+                    $flag.css('top', flagTopPx);
+                }
+            });
     }
 
     function adjustDomForAccessibilty() {
@@ -186,7 +193,7 @@
         return regex.test(email);
     }
 
-    function highlightErroringFields() {
+    function highlightErrorFields() {
         const errorImages = document.querySelectorAll('.pre-chat-container .error-image');
 
         if (errorImages) {
