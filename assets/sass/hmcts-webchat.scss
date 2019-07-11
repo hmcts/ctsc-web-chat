@@ -56,6 +56,7 @@ textarea {
   box-shadow: none !important;
   color: black !important;
   resize: none;
+  font-size: 20px !important;
 }
 
 input[type="text"],
@@ -220,6 +221,7 @@ body {
   border-radius: 4px;
   color: black;
   padding: 6px 10px;
+  text-align: left;
 }
 
 .chat-incoming-msg {
@@ -252,4 +254,14 @@ body {
       font-weight: 700 !important;
     }
   }
+}
+
+#cancel-close-btn:hover,
+#cancel-close-btn:focus {
+  background-color: #54555A !important;
+}
+
+
+#cancel-close-btn{
+  background-color: #6f777b !important;
 }
