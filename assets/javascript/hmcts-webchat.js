@@ -17,6 +17,9 @@ function webchat_init(customParams) {
         'textAllAgentsBusy',
         'textChatAlreadyOpen',
         'textAdditional',
+        'btnNoAgents',
+        'btnAgentsBusy',
+        'btnServiceClosed'
     ];
 
     const missingParams = [];
@@ -45,16 +48,16 @@ function webchat_init(customParams) {
         // additionalText: 'Monday to Friday, 9:30am to 5pm',
         // stylesheetURL: '', // should either be absolute starting with 'https:', or path relative to site root starting with '/'
         // busHandlerURL: '',
+        // btnNoAgents: '/' + customParams.tenant + '/button_7732814745cac6f4603c4d1.53357933/img/logo',
+        // btnAgentsBusy: '/' + customParams.tenant + '/button_2042157415cc19c95669039.65793052/img/logo',
+        // btnServiceClosed: '/' + customParams.tenant + '/button_20199488815cc1a89e0861d5.73103009/img/logo'
         busPublishInfo: null,
         busPublishLanguage: 'en', // use 'cy' for Welsh
         domain: 'https://vcc-eu4.8x8.com',
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
         chatDownAction: 'showMessage', // use 'showMessage' or 'hideHeader'
-        chatLinkFocusable: true,
-        btnNoAgents: '/' + customParams.tenant + '/button_7732814745cac6f4603c4d1.53357933/img/logo',
-        btnAgentsBusy: '/' + customParams.tenant + '/button_2042157415cc19c95669039.65793052/img/logo',
-        btnServiceClosed: '/' + customParams.tenant + '/button_20199488815cc1a89e0861d5.73103009/img/logo'
+        chatLinkFocusable: true
     };
 
     let params = Object.assign({}, defaultParams, customParams);
