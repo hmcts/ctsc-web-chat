@@ -94,6 +94,7 @@ body {
   }
 
   .title {
+    font-size: 20px;
     font-weight: bold !important;
     margin: 6px 0 !important
   }
@@ -192,6 +193,7 @@ body {
 .message-box {
   border-top: 2px solid govuk-colour("grey-3");
   margin: 0 auto !important;
+  opacity: 0;
   padding: 20px !important;
 
   #message-field {
@@ -231,6 +233,7 @@ body {
 }
 
 .chat-error-msg {
+  color: govuk-colour("black") !important;
   padding: 10px 0 !important;
 }
 

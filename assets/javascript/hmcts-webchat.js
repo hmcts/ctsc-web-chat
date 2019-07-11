@@ -3,11 +3,13 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.1.25';
+    const version = '0.2.0';
     const requiredParams = [
         'uuid',
         'tenant',
         'channel',
+        'stylesheetURL',
+        'busHandlerURL',
         'textChatDown',
         'textChatClosed',
         'textChatWithAnAgent',
@@ -17,10 +19,15 @@ function webchat_init(customParams) {
         'textAdditional',
     ];
 
-    if (!requiredParams.every(function(item) {
-        return customParams.hasOwnProperty(item);
-    })) {
-        console.log('One or more params missing');
+    const missingParams = [];
+    requiredParams.forEach(item => {
+        if (!customParams.hasOwnProperty(item)) {
+            missingParams.push(item);
+        }
+    });
+    if (missingParams.length) {
+        console.log('The following params are missing:');
+        console.table(missingParams);
         return false;
     }
 
@@ -36,13 +43,13 @@ function webchat_init(customParams) {
         // chatClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
         // chatAlreadyOpen: 'A web chat window is already open.',
         // additionalText: 'Monday to Friday, 9:30am to 5pm',
-        stylesheetURL: '', // should either be absolute starting with 'https:', or path relative to site root starting with '/'
+        // stylesheetURL: '', // should either be absolute starting with 'https:', or path relative to site root starting with '/'
+        // busHandlerURL: '',
         busPublishInfo: null,
         busPublishLanguage: 'en', // use 'cy' for Welsh
         domain: 'https://vcc-eu4.8x8.com',
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
-        busHandlerURL: '',
         chatDownAction: 'showMessage', // use 'showMessage' or 'hideHeader'
         chatLinkFocusable: true,
         btnNoAgents: '/' + customParams.tenant + '/button_7732814745cac6f4603c4d1.53357933/img/logo',

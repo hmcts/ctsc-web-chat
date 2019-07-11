@@ -1,164 +1,128 @@
 (function(root) {
-    const STR = {
-        YOU_ARE_NOW_CHATTING_WITH: 'You are now chatting with {{agent}}. Please type in the window below to start your chat.',
-        AGENT_DISCONNECTED: 'This conversation has now ended. Click on the ribbon on the top right if you wish to save a copy of this chat.',
-        CLICK_FOR_OPTIONS: 'Click for options',
-        CHAT_SESSION_ENDED: 'Chat session has been ended.',
-        CONFIRM_END_CHAT: 'Are you sure you want to end this chat conversation?',
-        TYPE_MESSAGE_HERE: 'Type your message here',
-        TYPE_HERE: 'Type here...',
-        YOUR_MESSAGE: 'Your Message: ',
-        AGENT: 'Agent '
+    const str = {
+        youAreNowChattingWith1: 'You are now chatting with',
+        youAreNowChattingWith2: ' {{agent}}. Please type in the window below to start your chat.',
+        agentDisconnected: 'This conversation has now ended. Click on the ribbon on the top right if you wish to save a copy of this chat.',
+        clickForOptions: 'Click for options',
+        chatSessionEnded: 'Chat session has been ended.',
+        confirmEndChat: 'Are you sure you want to end this chat conversation?',
+        typeMessageHere: 'Type your message here',
+        typeHere: 'Type here...',
+        yourMessage: 'Your Message: ',
+        agent: 'Agent: '
     };
     root.__8x8Chat = {
         onInit: function(bus) {
             bus.publish('chat:set-system-messages', {
-                chatEstablishedName: STR.YOU_ARE_NOW_CHATTING_WITH,
-                pullDownInfo: STR.CLICK_FOR_OPTIONS,
-                endChatNotification: STR.CHAT_SESSION_ENDED,
-                endChatConfirmation: STR.CONFIRM_END_CHAT,
-                agentDisconnected: STR.AGENT_DISCONNECTED
+                chatEstablishedName: str.youAreNowChattingWith1 + str.youAreNowChattingWith2,
+                pullDownInfo: str.clickForOptions,
+                endChatNotification: str.chatSessionEnded,
+                endChatConfirmation: str.confirmEndChat,
+                agentDisconnected: str.agentDisconnected
             });
         }
     };
 
-    function resizeChatWindow(count) {
-        setTimeout(function() {
-            if (window.outerHeight < 560) {
-                window.resizeTo(334, 560);
-                // resizeChatWindow(count + 1);
-            } else {
-                if (count < 30) {
-                  resizeChatWindow(count + 1);
-                }
-            }
-        }, 1000);
-    }
-
     jQuery(document).ready(function() {
         const $div = jQuery('div');
 
-        setTimeout(function() {
-            const $headerTitle = jQuery('.header .title');
-            jQuery('.header .logo').remove();
-            $headerTitle.attr('arial-label', $headerTitle.html());
-        }, 1000);
-
-        resizeChatWindow(0);
-
         $div.on('DOMNodeInserted', '.container', function() {
-            adjustDomForAccessibilty();
+            resizeChatWindow();
+            adjustDomForAccessibility();
             validateEmail();
-            highlightErrorFields();
-            focusFirstError();
+            highlightErrors();
         });
 
         $div.on('DOMNodeInserted', '.message-wrapper', function(e) {
-            const $messageBox = jQuery('.message-box');
-            const $messageField = jQuery('#message-field');
-            if (jQuery('.chat-log-msg').text().startsWith(STR.YOU_ARE_NOW_CHATTING_WITH)) {
-                $messageBox.css('opacity', 1);
-                addAttributeToField($messageField, 'aria-label', STR.TYPE_MESSAGE_HERE);
-                addAttributeToField($messageField, 'placeholder', STR.TYPE_MESSAGE_HERE);
-            }
-            if (jQuery('.chat-error-msg').text().startsWith(STR.agentDisconnected)) {
-                $messageBox.css('opacity', 0);
-            }
+            toggleActions('hide');
+            toggleChatFieldOnChatStatus();
+            addAriaLabelAndPlaceholderAttributesToChatField();
         });
-
-        let actionsLock = true;
 
         $div.on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
-            const $messageField = jQuery('#message-field');
-            addAttributeToField($messageField, 'aria-label', STR.TYPE_MESSAGE_HERE);
-            addAttributeToField($messageField, 'placeholder', STR.TYPE_MESSAGE_HERE);
-
-            //  jQuery('.message-box').css('opacity', 1);
-            jQuery('h1').attr('tabindex', '1');
-            jQuery('.chat-log-msg').attr('tabindex', '0');
-
-            const el = jQuery(e.target);
-            el.attr('tabindex', '0');
-            let pref = STR.YOUR_MESSAGE;
-            if (el.hasClass('chat-incoming-msg')) {
-                pref = STR.AGENT;
-            }
-            let str = el.html();
-            str = str.replace(/<.*?>/g, ' ');
-
-            el.attr('aria-label', pref + str);
-        });
-
-        $div.on('DOMNodeInserted', '.message-box', function() {
-            if (actionsLock) {
-                optionFlagAccessibility();
-            }
-            actionsLock = false;
+            toggleActions('show');
+            addAriaLabelAttributeToChatMessage(jQuery(e.target));
         });
     });
 
-    function getFlagOffsetTop() {
-        let visibleActions = 0;
-        jQuery('.actions').children().each(function() {
-            jQuery(this).css('display') !== 'none' ? visibleActions++ : null;
-        });
-        return (36 * visibleActions) + 'px';
+    function resizeChatWindow() {
+        setInterval(function() {
+            if (window.outerHeight < 560 || window.outerWidth < 350) {
+                window.resizeTo(350, 560);
+            }
+        }, 1000);
     }
 
-    function optionFlagAccessibility () {
-        const $actions = jQuery('.actions');
-        const $flag = jQuery('.flag');
-
-        jQuery('.action-clear').remove();
-        $actions.hide();
-
-        const flagTopPx = getFlagOffsetTop();
-
-        $flag
-            .css('top', flagTopPx)
-            .css('position', 'relative')
-            .click(function() {
-                $actions.toggle();
-                jQuery('.action-clear').remove();
-
-                if ($actions.is(':visible')) {
-                    $flag.css('top', 0);
-                    $actions.children(':visible:first').focus()
-                } else {
-                    $flag.css('top', flagTopPx);
-                }
-            });
+    function adjustDomForAccessibility() {
+        removeUnusedContainers('.invitation-container, .offline-container, .skip-queue-container, .post-chat-container');
+        removeLogos();
+        addAriaLabelAttributeToLinks();
+        addAriaLabelAttributeToTitles();
+        addAriaLabelAttributeToButtons();
+        addAriaLabelAndPlaceholderAttributesToPreChatFields();
     }
 
-    function adjustDomForAccessibilty() {
-        jQuery('a').each(function() {
-            const title = jQuery(this).attr('title');
-            jQuery(this).attr('aria-label', title)
-        }) ;
+    function removeUnusedContainers(containers) {
+        document.querySelectorAll(containers).forEach(item => item.remove());
+    }
 
+    function removeLogos() {
+        const headerLogoElements = document.querySelectorAll('.header .logo');
+        if (headerLogoElements) {
+            for (const item of headerLogoElements) {
+                item.remove();
+            }
+        }
+    }
+
+    function addAriaLabelAttributeToLinks() {
+        const anchorElements = document.querySelectorAll('a');
+        if (anchorElements) {
+            for (const item of anchorElements) {
+                item.setAttribute('aria-label', item.getAttribute('title'));
+            }
+        }
+    }
+
+    function addAriaLabelAttributeToTitles() {
+        const headerTitleElements = document.querySelectorAll('.header .title');
+        if (headerTitleElements) {
+            for (const item of headerTitleElements) {
+                item.setAttribute('aria-label', item.textContent);
+                item.setAttribute('tabindex', 1);
+            }
+        }
+    }
+
+    function addAriaLabelAttributeToButtons() {
+        const buttonElements = document.querySelectorAll('button');
+        if (buttonElements) {
+            for (const item of buttonElements) {
+                item.setAttribute('aria-label', item.textContent);
+            }
+        }
+    }
+
+    function addAriaLabelAndPlaceholderAttributesToPreChatFields() {
         const form = document.querySelector('.pre-chat-container .form-list');
         if (form) {
-            const listItems = form.children;
-            for (const item of listItems) {
+            const listElements = form.children;
+            for (const item of listElements) {
                 const label = item.getElementsByTagName('label')[0];
                 if (label) {
                     addAttributeToField(item, 'aria-label', label.textContent);
-                    addAttributeToField(item, 'placeholder', STR.TYPE_HERE);
+                    addAttributeToField(item, 'placeholder', str.typeHere);
                     wrapLabelInSpan(label);
-                }
-                const button = item.getElementsByTagName('button')[0];
-                if (button) {
-                    addAttributeToField(item, 'aria-label', label.textContent);
                 }
             }
         }
     }
 
-    function addAttributeToField(item, attribute, value) {
-        let field = item.getElementsByTagName('textarea')[0];
+    function addAttributeToField(wrapper, attribute, value) {
+        let field = wrapper.getElementsByTagName('textarea')[0];
 
         if (!field) {
-            field = item.getElementsByTagName('input')[0];
+            field = wrapper.getElementsByTagName('input')[0];
         }
 
         field.setAttribute(attribute, value);
@@ -168,7 +132,7 @@
         const newSpan = document.createElement('span');
         const labelNodes = label.childNodes;
 
-        for (const item in labelNodes) {
+        for (const item of labelNodes) {
             if (item.nodeType === Node.TEXT_NODE) {
                 newSpan.appendChild(document.createTextNode(item.nodeValue));
                 label.replaceChild(newSpan, item);
@@ -193,7 +157,7 @@
         return regex.test(email);
     }
 
-    function highlightErrorFields() {
+    function highlightErrors() {
         const errorImages = document.querySelectorAll('.pre-chat-container .error-image');
 
         if (errorImages) {
@@ -206,6 +170,8 @@
                     jQuery(field).removeClass('error');
                 }
             }
+
+            focusFirstError();
         }
     }
 
@@ -213,5 +179,53 @@
         setTimeout(function() {
             jQuery('textarea.error, input.error').first().focus();
         }, 50);
+    }
+
+    function addAriaLabelAttributeToChatMessage(el) {
+        jQuery('.chat-log-msg').attr('tabindex', '0');
+
+        el.attr('tabindex', '0');
+
+        let sender;
+        if (el.hasClass('chat-incoming-msg')) {
+            sender = str.agent;
+        } else {
+            sender = str.yourMessage;
+        }
+        let string = el.html();
+        string = string.replace(/<span.*?<\/span>/g, '');
+
+        el.attr('aria-label', sender + string);
+    }
+
+    function toggleChatFieldOnChatStatus() {
+        const messageBoxElement = document.querySelector('.message-box');
+        if (jQuery('.chat-log-msg').text().startsWith(str.youAreNowChattingWith1)) {
+            jQuery(messageBoxElement).css('opacity', 1);
+        }
+        if (jQuery('.chat-error-msg').text().startsWith(str.agentDisconnected)) {
+            jQuery(messageBoxElement).css('opacity', 0);
+        }
+    }
+
+    function addAriaLabelAndPlaceholderAttributesToChatField() {
+        const messageBoxItemElement = document.querySelector('.message-box-item');
+        addAttributeToField(messageBoxItemElement, 'aria-label', str.typeMessageHere);
+        addAttributeToField(messageBoxItemElement, 'placeholder', str.typeMessageHere);
+    }
+
+    function toggleActions(action) {
+        const $actionElement = jQuery('.actions');
+        switch(action) {
+            case 'hide':
+                jQuery('.action-clear').remove();
+                if (!jQuery('.chat-log-msg').text().startsWith(str.youAreNowChattingWith1)) {
+                    $actionElement.hide();
+                }
+                break;
+            case 'show':
+                $actionElement.show();
+                break;
+        }
     }
 })(this);
