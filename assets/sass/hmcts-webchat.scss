@@ -56,7 +56,6 @@ textarea {
   box-shadow: none !important;
   color: black !important;
   resize: none;
-  font-size: 20px !important;
 }
 
 input[type="text"],
@@ -256,12 +255,12 @@ body {
   }
 }
 
-#cancel-close-btn:hover,
-#cancel-close-btn:focus {
-  background-color: #54555A !important;
-}
 
+#cancel-close-btn {
+  background-color: govuk-colour("grey-1") !important;
 
-#cancel-close-btn{
-  background-color: #6f777b !important;
+  &:hover,
+  &:focus {
+    background-color: govuk-shade(govuk-colour("grey-1"), 24) !important;
+  }
 }

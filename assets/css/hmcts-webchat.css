@@ -1313,6 +1313,7 @@ body.is-popup {
   border-radius: 4px;
   color: black;
   padding: 6px 10px;
+  text-align: left;
 }
 
 .chat-incoming-msg {
@@ -1343,4 +1344,12 @@ body.is-popup {
 .error-image[style*="block"] + span {
   color: #b10e1e !important;
   font-weight: 700 !important;
+}
+
+#cancel-close-btn {
+  background-color: #6f777b !important;
+}
+
+#cancel-close-btn:hover, #cancel-close-btn:focus {
+  background-color: #545a5d !important;
 }
