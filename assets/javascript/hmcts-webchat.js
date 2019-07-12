@@ -3,7 +3,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.2.3';
+    const version = '0.2.4';
     const requiredParams = [
         'uuid',
         'tenant',
@@ -95,7 +95,7 @@ function webchat_init(customParams) {
                     const paragraph = document.createElement('p');
                     let additionalTextArray;
 
-                    chatLink.innerHTML = null;
+                    chatLink.innerHTML = '';
 
                     if (chatImgBtn === params.btnNoAgents) {
                         additionalTextArray = parseText(params.textNoAgentsAvailable);
