@@ -8,8 +8,6 @@ function webchat_init(customParams) {
         'uuid',
         'tenant',
         'channel',
-        'stylesheetURL',
-        'busHandlerURL',
         'textChatDown',
         'textChatClosed',
         'textChatWithAnAgent',
@@ -24,7 +22,8 @@ function webchat_init(customParams) {
 
     const missingParams = [];
     requiredParams.forEach(item => {
-        if (!customParams.hasOwnProperty(item)) {
+        const propertyValueExists = !customParams.hasOwnProperty(item);
+        if (!propertyValueExists) {
             missingParams.push(item);
         }
     });
@@ -46,8 +45,6 @@ function webchat_init(customParams) {
         // chatClosed : 'The web chat is now closed. Come back Monday to Friday 9:30am to 5pm.\nOr contact us using one of the ways below.',
         // chatAlreadyOpen: 'A web chat window is already open.',
         // additionalText: 'Monday to Friday, 9:30am to 5pm',
-        // stylesheetURL: '', // should either be absolute starting with 'https:', or path relative to site root starting with '/'
-        // busHandlerURL: '',
         // btnNoAgents: '/' + customParams.tenant + '/button_7732814745cac6f4603c4d1.53357933/img/logo',
         // btnAgentsBusy: '/' + customParams.tenant + '/button_2042157415cc19c95669039.65793052/img/logo',
         // btnServiceClosed: '/' + customParams.tenant + '/button_20199488815cc1a89e0861d5.73103009/img/logo'
@@ -57,7 +54,9 @@ function webchat_init(customParams) {
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
         chatDownAction: 'showMessage', // use 'showMessage' or 'hideHeader'
-        chatLinkFocusable: true
+        chatLinkFocusable: true,
+        stylesheetURL: '../css/hmcts-webchat.css',
+        busHandlerURL: './hmcts-webchat-busHandler.js'
     };
 
     let params = Object.assign({}, defaultParams, customParams);
@@ -74,7 +73,7 @@ function webchat_init(customParams) {
             params.stylesheetURL.startsWith('https:') ? params.stylesheetURL :
                 (params.stylesheetURL.startsWith('/') && location.protocol === 'https') ?
                     'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
-                    'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
+                    params.stylesheetURL,
         busHandlerURL: params.busHandlerURL,
         chatDownAction: params.chatDownAction,
         chatLinkFocusable: params.chatLinkFocusable,
