@@ -21,6 +21,7 @@
     "access": "public"
   },
   "scripts": {
+    "setup": "NODE_PATH=. node-sass assets/sass/hmcts-webchat.scss --output assets/css --quiet --output-style expanded --include-path node_modules/govuk_frontend",
     "build-task:scss-compile": "cross-env NODE_PATH=. node-sass-chokidar --source-map true assets/sass -o assets/css",
     "sass:build": "cross-env NODE_PATH=. run-s build-task:*",
     "sass:watch": "cross-env NODE_PATH=. chokidar 'assets/sass/**/*.scss' -c 'npm run sass:build'",
@@ -29,9 +30,9 @@
     "lint": "cross-env NODE_PATH=. eslint --ignore-pattern coverage ."
   },
   "dependencies": {
-    "@hmcts/frontend": "0.0.29-alpha",
     "@hmcts/nodejs-logging": "^3.0.0",
-    "govuk-frontend": "^2.7.0"
+    "govuk-frontend": "^2.13.0",
+    "node-sass": "^4.12.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.4.7",
