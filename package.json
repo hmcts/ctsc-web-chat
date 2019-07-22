@@ -1,6 +1,6 @@
 {
   "name": "@hmcts/ctsc-web-chat",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Assets to support HMCTS CTSC web chat",
   "repository": {
     "type": "git",
