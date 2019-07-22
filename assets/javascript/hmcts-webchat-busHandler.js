@@ -1,3 +1,10 @@
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString, position) {
+        position = position || 0;
+        return this.indexOf(searchString, position) === position;
+    };
+}
+
 (function(root) {
     const str = {
         youAreNowChattingWith1: 'You are now chatting with',
@@ -63,7 +70,10 @@
     }
 
     function removeUnusedContainers(containers) {
-        document.querySelectorAll(containers).forEach(item => item.remove());
+        const containersArray = document.querySelectorAll(containers);
+        for (let i = 0, len = containersArray.length; i < len; i++) {
+            containersArray[i].remove();
+        }
     }
 
     function removeLogos() {

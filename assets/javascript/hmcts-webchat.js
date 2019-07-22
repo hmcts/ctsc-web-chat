@@ -1,9 +1,50 @@
+if (!Object.assign) {
+    Object.defineProperty(Object, 'assign', {
+        enumerable: false,
+        configurable: true,
+        writable: true,
+        value: function(target) {
+            'use strict';
+
+            if (target === undefined || target === null) {
+                throw new TypeError('Cannot convert first argument to object');
+            }
+
+            let to = Object(target);
+            for (let i = 1; i < arguments.length; i++) {
+                let nextSource = arguments[i];
+                if (nextSource === undefined || nextSource === null) {
+                    continue;
+                }
+                nextSource = Object(nextSource);
+
+                let keysArray = Object.keys(Object(nextSource));
+                for (let nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+                    let nextKey = keysArray[nextIndex];
+                    let desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+                    if (desc !== undefined && desc.enumerable) {
+                        to[nextKey] = nextSource[nextKey];
+                    }
+                }
+            }
+            return to;
+        }
+    });
+}
+
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString, position) {
+        position = position || 0;
+        return this.indexOf(searchString, position) === position;
+    };
+}
+
 function parseText(text) {
     return text.split('\n');
 }
 
 function webchat_init(customParams) {
-    const version = '0.2.4';
+    const version = '0.2.5';
     const requiredParams = [
         'uuid',
         'tenant',
@@ -23,11 +64,13 @@ function webchat_init(customParams) {
     ];
 
     const missingParams = [];
-    requiredParams.forEach(item => {
-        if (!customParams.hasOwnProperty(item)) {
-            missingParams.push(item);
+
+    for (let i = 0, len = requiredParams.length; i < len; i++) {
+        if (!customParams.hasOwnProperty(requiredParams[i])) {
+            missingParams.push(requiredParams[i]);
         }
-    });
+    }
+
     if (missingParams.length) {
         console.log('The following params are missing:');
         console.table(missingParams);
@@ -111,14 +154,14 @@ function webchat_init(customParams) {
                         additionalTextArray = parseText(params.textAdditional);
                     }
 
-                    additionalTextArray.forEach((line, index) => {
+                    for (let i = 0, len = additionalTextArray.length; i < len; i++) {
                         const br = document.createElement('br');
-                        const additionalTextLine = document.createTextNode(line);
+                        const additionalTextLine = document.createTextNode(additionalTextArray[i]);
                         paragraph.appendChild(additionalTextLine);
-                        if (index < additionalTextArray.length - 1) {
+                        if (i < additionalTextArray.length - 1) {
                             paragraph.appendChild(br);
                         }
-                    });
+                    }
 
                     chatContainer.appendChild(paragraph);
                 }
