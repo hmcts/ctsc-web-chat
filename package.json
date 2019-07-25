@@ -1,7 +1,7 @@
 {
   "name": "@hmcts/ctsc-web-chat",
-  "version": "0.2.8",   
-  "description": "Assets to support HMCTS CTSC web chat 0.2.8",
+  "version": "0.3.0",
+  "description": "HMCTS CTSC Web Chat",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hmcts/ctsc-web-chat.git"
