@@ -8,8 +8,8 @@ if (!String.prototype.startsWith) {
 (function(root) {
     const str = {
         youAreNowChattingWith1: 'You are now chatting with',
-        youAreNowChattingWith2: ' {{agent}}. Please type in the window below to start your chat.',
-        agentDisconnected: 'This conversation has now ended. Click on the ribbon on the top right if you wish to save a copy of this chat.',
+        youAreNowChattingWith2: ' {{agent}}. Please type in the box below to start your chat.',
+        agentDisconnected: 'This chat has now ended. Click the ribbon on the top right if you wish to save a copy.',
         clickForOptions: 'Click for options',
         chatSessionEnded: 'Chat session has been ended.',
         confirmEndChat: 'Are you sure you want to end this chat conversation?',
