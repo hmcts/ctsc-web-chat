@@ -67,6 +67,7 @@ if (!String.prototype.startsWith) {
         addAriaLabelAttributeToTitles();
         addAriaLabelAttributeToButtons();
         addAriaLabelAndPlaceholderAttributesToPreChatFields();
+        toggleSaveAccessibility();
     }
 
     function removeUnusedContainers(containers) {
@@ -226,6 +227,8 @@ if (!String.prototype.startsWith) {
 
     function toggleActions(action) {
         const $actionElement = jQuery('.actions');
+        const saveButton = document.querySelector('.action-save');
+
         switch(action) {
             case 'hide':
                 jQuery('.action-clear').remove();
@@ -235,7 +238,22 @@ if (!String.prototype.startsWith) {
                 break;
             case 'show':
                 $actionElement.show();
+                saveButton.setAttribute('tabindex', '-1');
                 break;
         }
+    }
+
+    function toggleSaveAccessibility() {
+        const saveButton = document.querySelector('.action-save');
+
+        jQuery('.flag').on('click', function() {
+            setTimeout(function() {
+                if (parseInt(jQuery('.message-actions').css('top')) === 0) {
+                    saveButton.removeAttribute('tabindex');
+                } else {
+                    saveButton.setAttribute('tabindex', '-1');
+                }
+            }, 750);
+        });
     }
 })(this);
