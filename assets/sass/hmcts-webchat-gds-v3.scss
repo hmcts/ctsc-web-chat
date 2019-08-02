@@ -7,7 +7,7 @@
 @import "node_modules/govuk-frontend-3/govuk/components/label/label";
 @import "node_modules/govuk-frontend-3/govuk/components/textarea/textarea";
 
-$govuk-button-colour: #00823b; // sass-lint:disable no-color-literals
+$govuk-button-colour: govuk-colour("green");; // sass-lint:disable no-color-literals
 $govuk-button-hover-colour: govuk-shade($govuk-button-colour, 20%);
 $govuk-button-shadow-colour: govuk-shade($govuk-button-colour, 60%);
 $govuk-button-text-colour: govuk-colour("white");
@@ -24,9 +24,26 @@ input[type="submit"] {
   margin-top: 10px !important;
   width: calc(100% - 40px) !important;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: $govuk-button-hover-colour !important;
+  }
+
+  &:focus {
+    border-color: govuk-colour("yellow") !important;
+    box-shadow: inset 0 0 0 1px govuk-colour("yellow") !important;
+    outline: 3px solid transparent;
+
+    &:not(:active):not(:hover) {
+      background-color: govuk-colour("yellow") !important;
+      border-color: govuk-colour("yellow") !important;
+      box-shadow: 0 2px 0 govuk-colour("black") !important;
+      color: govuk-colour("black") !important;
+    }
+  }
+
+  &:active {
+    box-shadow: 0 2px 0 $govuk-button-shadow-colour;
+    outline: 0;
   }
 }
 

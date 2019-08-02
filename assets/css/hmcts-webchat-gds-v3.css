@@ -1128,7 +1128,7 @@ input[type="number"] {
 
 button,
 input[type="submit"] {
-  background-color: #00823b !important;
+  background-color: #00703c !important;
   background-image: none !important;
   border-color: transparent !important;
   color: #ffffff !important;
@@ -1137,10 +1137,30 @@ input[type="submit"] {
   width: calc(100% - 40px) !important;
 }
 
-button:hover, button:focus,
-input[type="submit"]:hover,
+button:hover,
+input[type="submit"]:hover {
+  background-color: #005a30 !important;
+}
+
+button:focus,
 input[type="submit"]:focus {
-  background-color: #00682f !important;
+  border-color: #ffdd00 !important;
+  box-shadow: inset 0 0 0 1px #ffdd00 !important;
+  outline: 3px solid transparent;
+}
+
+button:focus:not(:active):not(:hover),
+input[type="submit"]:focus:not(:active):not(:hover) {
+  background-color: #ffdd00 !important;
+  border-color: #ffdd00 !important;
+  box-shadow: 0 2px 0 #0b0c0c !important;
+  color: #0b0c0c !important;
+}
+
+button:active,
+input[type="submit"]:active {
+  box-shadow: 0 2px 0 #002d18;
+  outline: 0;
 }
 
 input[type="text"],
