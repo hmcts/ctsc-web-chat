@@ -44,7 +44,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.3.2';
+    const version = '0.3.3';
     const requiredParams = [
         'uuid',
         'tenant',
@@ -131,6 +131,7 @@ function webchat_init(customParams) {
 
                 if (chatLink && !window.__8x8Chat.chatLinkFocusable) {
                     chatLink.setAttribute('tabindex', '-1');
+                    chatLink.classList.add('govuk-link');
                 }
 
                 if (chatImg) {
