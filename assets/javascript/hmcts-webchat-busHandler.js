@@ -5,6 +5,15 @@ if (!String.prototype.startsWith) {
     };
 }
 
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = function (callback, thisArg) {
+        thisArg = thisArg || window;
+        for (let i=0; i<this.length; i++) {
+            callback.call(thisArg, this[i], i, this);
+        }
+    };
+}
+
 (function(root) {
     const str = {
         youAreNowChattingWith1: 'You are now chatting with',
@@ -18,6 +27,7 @@ if (!String.prototype.startsWith) {
         yourMessage: 'Your Message: ',
         agent: 'Agent: '
     };
+
     root.__8x8Chat = {
         onInit: function(bus) {
             bus.publish('chat:set-system-messages', {
@@ -31,26 +41,38 @@ if (!String.prototype.startsWith) {
     };
 
     jQuery(document).ready(function() {
-        const $div = jQuery('div');
+        const selectors = [
+            '.container',
+            '.message-wrapper',
+            '.chat-incoming-msg, .chat-outgoing-msg'
+        ];
 
-        $div.on('DOMNodeInserted', '.container', function() {
-            resizeChatWindow();
-            adjustDomForAccessibility();
-            validateEmail();
-            highlightErrors();
-        });
-
-        $div.on('DOMNodeInserted', '.message-wrapper', function(e) {
-            toggleActions('hide');
-            toggleChatFieldOnChatStatus();
-            addAriaLabelAndPlaceholderAttributesToChatField();
-        });
-
-        $div.on('DOMNodeInserted', '.chat-incoming-msg, .chat-outgoing-msg', function(e) {
-            toggleActions('show');
-            addAriaLabelAttributeToChatMessage(jQuery(e.target));
-        });
+        for (let i=0; i<selectors.length; i++) {
+            jQuery(document).on('DOMNodeInserted', selectors[i], {selector: selectors[i]}, function (e) {
+                onDOMNodeInserted(e.data.selector, e);
+            });
+        }
     });
+
+    function onDOMNodeInserted(selector, e) {
+        switch(selector) {
+            case '.container':
+                resizeChatWindow();
+                adjustDomForAccessibility();
+                validateEmail();
+                highlightErrors();
+                break;
+            case '.message-wrapper':
+                toggleActions('hide');
+                toggleChatFieldOnChatStatus();
+                addAriaLabelAndPlaceholderAttributesToChatField();
+                break;
+            case '.chat-incoming-msg, .chat-outgoing-msg':
+                toggleActions('show');
+                addAriaLabelAttributeToChatMessage(jQuery(e.target));
+                break;
+        }
+    }
 
     function resizeChatWindow() {
         setInterval(function() {
@@ -80,37 +102,37 @@ if (!String.prototype.startsWith) {
     function removeLogos() {
         const headerLogoElements = document.querySelectorAll('.header .logo');
         if (headerLogoElements) {
-            for (const item of headerLogoElements) {
+            headerLogoElements.forEach(function(item) {
                 item.remove();
-            }
+            });
         }
     }
 
     function addAriaLabelAttributeToLinks() {
         const anchorElements = document.querySelectorAll('a');
         if (anchorElements) {
-            for (const item of anchorElements) {
+            anchorElements.forEach(function(item) {
                 item.setAttribute('aria-label', item.getAttribute('title'));
-            }
+            });
         }
     }
 
     function addAriaLabelAttributeToTitles() {
         const headerTitleElements = document.querySelectorAll('.header .title');
         if (headerTitleElements) {
-            for (const item of headerTitleElements) {
+            headerTitleElements.forEach(function(item) {
                 item.setAttribute('aria-label', item.textContent);
                 item.setAttribute('tabindex', 1);
-            }
+            });
         }
     }
 
     function addAriaLabelAttributeToButtons() {
         const buttonElements = document.querySelectorAll('button');
         if (buttonElements) {
-            for (const item of buttonElements) {
+            buttonElements.forEach(function(item) {
                 item.setAttribute('aria-label', item.textContent);
-            }
+            });
         }
     }
 
@@ -118,11 +140,11 @@ if (!String.prototype.startsWith) {
         const form = document.querySelector('.pre-chat-container .form-list');
         if (form) {
             const listElements = form.children;
-            for (const item of listElements) {
-                const label = item.getElementsByTagName('label')[0];
+            for (var i=0; i<listElements.length; i++) {
+                const label = listElements[i].getElementsByTagName('label')[0];
                 if (label) {
-                    addAttributeToField(item, 'aria-label', label.textContent);
-                    addAttributeToField(item, 'placeholder', str.typeHere);
+                    addAttributeToField(listElements[i], 'aria-label', label.textContent);
+                    addAttributeToField(listElements[i], 'placeholder', str.typeHere);
                     wrapLabelInSpan(label);
                 }
             }
@@ -143,12 +165,12 @@ if (!String.prototype.startsWith) {
         const newSpan = document.createElement('span');
         const labelNodes = label.childNodes;
 
-        for (const item of labelNodes) {
+        labelNodes.forEach(function(item) {
             if (item.nodeType === Node.TEXT_NODE) {
                 newSpan.appendChild(document.createTextNode(item.nodeValue));
                 label.replaceChild(newSpan, item);
             }
-        }
+        });
     }
 
     function validateEmail() {
@@ -172,7 +194,7 @@ if (!String.prototype.startsWith) {
         const errorImages = document.querySelectorAll('.pre-chat-container .error-image');
 
         if (errorImages) {
-            for (const item of errorImages) {
+            errorImages.forEach(function(item) {
                 const field = jQuery(item).parent().siblings('textarea, input')[0];
 
                 if (item.style.display === 'inline-block') {
@@ -180,7 +202,7 @@ if (!String.prototype.startsWith) {
                 } else {
                     jQuery(field).removeClass('error');
                 }
-            }
+            });
 
             focusFirstError();
         }
