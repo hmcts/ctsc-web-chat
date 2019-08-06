@@ -1145,6 +1145,17 @@ input[type="submit"]:focus {
   background-color: #00682f !important;
 }
 
+button#cancel-close-btn,
+input[type="submit"]#cancel-close-btn {
+  background-color: #6f777b !important;
+}
+
+button#cancel-close-btn:hover, button#cancel-close-btn:focus,
+input[type="submit"]#cancel-close-btn:hover,
+input[type="submit"]#cancel-close-btn:focus {
+  background-color: #545a5d !important;
+}
+
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -1350,12 +1361,4 @@ body.is-popup {
 .error-image[style*="block"] + span {
   color: #b10e1e !important;
   font-weight: 700 !important;
-}
-
-#cancel-close-btn {
-  background-color: #6f777b !important;
-}
-
-#cancel-close-btn:hover, #cancel-close-btn:focus {
-  background-color: #545a5d !important;
 }

@@ -28,6 +28,15 @@ input[type="submit"] {
   &:focus {
     background-color: $govuk-button-hover-colour !important;
   }
+
+  &#cancel-close-btn {
+    background-color: govuk-colour("grey-1") !important;
+
+    &:hover,
+    &:focus {
+      background-color: govuk-shade(govuk-colour("grey-1"), 24) !important;
+    }
+  }
 }
 
 input[type="text"],
@@ -252,15 +261,5 @@ body {
       color: govuk-colour("red") !important;
       font-weight: 700 !important;
     }
-  }
-}
-
-
-#cancel-close-btn {
-  background-color: govuk-colour("grey-1") !important;
-
-  &:hover,
-  &:focus {
-    background-color: govuk-shade(govuk-colour("grey-1"), 24) !important;
   }
 }

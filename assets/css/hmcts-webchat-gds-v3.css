@@ -1163,6 +1163,31 @@ input[type="submit"]:active {
   outline: 0;
 }
 
+button#cancel-close-btn,
+input[type="submit"]#cancel-close-btn {
+  background-color: #6f777b !important;
+}
+
+button#cancel-close-btn:hover,
+input[type="submit"]#cancel-close-btn:hover {
+  background-color: #545a5d !important;
+}
+
+button#cancel-close-btn:focus,
+input[type="submit"]#cancel-close-btn:focus {
+  border-color: #ffdd00 !important;
+  box-shadow: inset 0 0 0 1px #ffdd00 !important;
+  outline: 3px solid transparent;
+}
+
+button#cancel-close-btn:focus:not(:active):not(:hover),
+input[type="submit"]#cancel-close-btn:focus:not(:active):not(:hover) {
+  background-color: #ffdd00 !important;
+  border-color: #ffdd00 !important;
+  box-shadow: 0 2px 0 #0b0c0c !important;
+  color: #0b0c0c !important;
+}
+
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -1368,12 +1393,4 @@ body.is-popup {
 .error-image[style*="block"] + span {
   color: #d4351c !important;
   font-weight: 700 !important;
-}
-
-#cancel-close-btn {
-  background-color: #6f777b !important;
-}
-
-#cancel-close-btn:hover, #cancel-close-btn:focus {
-  background-color: #545a5d !important;
 }
