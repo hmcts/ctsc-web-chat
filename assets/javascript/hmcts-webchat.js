@@ -44,7 +44,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.3.7';
+    const version = '0.3.8';
     const requiredParams = [
         'uuid',
         'tenant',
@@ -100,7 +100,8 @@ function webchat_init(customParams) {
         path: '/.',
         buttonContainerId: 'ctsc-web-chat',
         chatDownAction: 'showMessage', // use 'showMessage' or 'hideHeader'
-        chatLinkFocusable: true
+        chatLinkFocusable: true,
+        gdsMajorVersion: 3
     };
 
     let params = Object.assign({}, defaultParams, customParams);
@@ -117,7 +118,7 @@ function webchat_init(customParams) {
             params.stylesheetURL.startsWith('https:') ? params.stylesheetURL :
                 (params.stylesheetURL.startsWith('/') && location.protocol === 'https') ?
                     'https://' + window.location.hostname + ':' + window.location.port + params.stylesheetURL :
-                    'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat.min.css',
+                    'https://cdn.jsdelivr.net/npm/@hmcts/ctsc-web-chat@' + version + '/assets/css/hmcts-webchat-gds-v' + params.gdsMajorVersion + '.css',
         busHandlerURL: params.busHandlerURL,
         chatDownAction: params.chatDownAction,
         chatLinkFocusable: params.chatLinkFocusable,
