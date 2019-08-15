@@ -44,7 +44,7 @@ function parseText(text) {
 }
 
 function webchat_init(customParams) {
-    const version = '0.3.8';
+    const version = '0.3.9';
     const requiredParams = [
         'uuid',
         'tenant',
@@ -197,7 +197,7 @@ function webchat_init(customParams) {
         setTimeout(function() {
             const chatContainer = document.querySelector('#' + window.__8x8Chat.buttonContainerId);
 
-            if (chatContainer.innerHTML === '') {
+            if (chatContainer && chatContainer.innerHTML === '') {
                 switch (window.__8x8Chat.chatDownAction) {
                     case 'showMessage':
                         chatContainer.innerHTML = params.textChatDown;
