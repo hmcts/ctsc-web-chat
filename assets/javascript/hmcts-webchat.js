@@ -1,3 +1,4 @@
+// example of change
 if (!Object.assign) {
     Object.defineProperty(Object, 'assign', {
         enumerable: false,
