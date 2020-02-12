@@ -29,7 +29,8 @@
     "sass:watch": "cross-env NODE_PATH=. chokidar 'assets/sass/**/*.scss' -c 'npm run sass:build'",
     "sass:watch-web-chat": "cross-env NODE_PATH=. chokidar 'assets/web-chat/**/*.scss' -c 'npm run sass:build'",
     "build": "run-s *:build",
-    "lint": "cross-env NODE_PATH=. eslint --ignore-pattern coverage ."
+    "lint": "cross-env NODE_PATH=. eslint --ignore-pattern coverage .",
+    "test": "yarn lint"
   },
   "dependencies": {
     "@hmcts/nodejs-logging": "^3.0.0",
