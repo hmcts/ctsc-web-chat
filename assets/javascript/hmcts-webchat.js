@@ -142,6 +142,7 @@ function webchat_init(customParams) {
                     let additionalTextArray;
 
                     chatLink.innerHTML = '';
+                    paragraph.classList.add('govuk-body');
 
                     if (chatImgBtn === params.btnNoAgents) {
                         additionalTextArray = parseText(params.textNoAgentsAvailable);
@@ -151,6 +152,7 @@ function webchat_init(customParams) {
                         additionalTextArray = parseText(params.textChatClosed);
                     } else {
                         const chatLinkParagraph = document.createElement('p');
+                        chatLinkParagraph.classList.add('govuk-body');
                         chatLink.innerText = params.textChatWithAnAgent;
                         chatLink.parentNode.insertBefore(chatLinkParagraph, chatLink);
                         chatLinkParagraph.appendChild(chatLink);
